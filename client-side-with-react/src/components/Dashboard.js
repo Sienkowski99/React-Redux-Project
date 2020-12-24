@@ -5,7 +5,7 @@ import auth from '../components/auth'
 import Button from '@material-ui/core/Button';
 
 function Dashboard(props) {
-    console.log(props.auth)
+    // console.log(props.auth)
     return (
         <div className="all">
             <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px"}}>

@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
+
 const port = 8080
 const sha256 = require('js-sha256')
 app.use(express.json());
+
 const User = require('./models/User');
 const mongoose = require('mongoose');
 mongoose
@@ -12,6 +14,8 @@ mongoose
   })
   .catch(error => console.error('Error connecting to MongoDB', error));
 
+const cors = require('cors')
+app.use(cors())
 
 app.get('/', (req, res) => {
   User.find().then(result => console.log(result))
@@ -28,9 +32,61 @@ app.post('/register', (req, res) => {
     friendsList: [],
     notifications: []
   })
-  newUser.save().then(result => {return res.send({newUser: result})}).catch(err=>res.send(err))
+  let response_object = {
+    msg: null,
+    statusCode: null
+  }
+  newUser.save().
+  then(result => {
+    console.log(result)
+    response_object.msg = "Now you have to log in"
+    response_object.statusCode = 200
+    console.log("User ha been added");
+    return res.send(response_object)
+  })
+  .catch(err=>res.send(err))
+})
 
-  // res.send("You're trying to log in")
+app.post('/login', (req, res) => {
+  //in body: login, password
+  console.log(req.body)
+  // const newUser = new User({
+  //   login: req.body.login,
+  //   password: sha256(req.body.password),
+  //   email: req.body.email,
+  //   registrationDate: new Date(),
+  //   friendsList: [],
+  //   notifications: []
+  // })
+  let response_object = {
+    msg: null,
+    statusCode: null
+  }
+
+  User.find({
+    login: req.body.login
+  })
+  .then(result => {
+    console.log(result);
+    if (result.length) {
+      if (result[0].password === sha256(req.body.password)) {
+        response_object.msg = "User exists and password is valid"
+        response_object.statusCode = 200
+      } else {
+        response_object.msg = "Password is incorrect"
+        response_object.statusCode = 402
+      }
+    } else {
+      response_object.msg = "User not in database"
+      response_object.statusCode = 401
+    }
+    console.log(response_object)
+    res.send(response_object)
+  })
+  .catch(err => {
+    console.log(err);
+    res.send("An error has ocurred");
+  })
 })
 
 app.listen(port, () => {
