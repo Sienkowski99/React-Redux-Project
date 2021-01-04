@@ -15,7 +15,7 @@ function Login(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)
-        axios.post('http://172.18.144.1:8080/login', {login: login, password: password})
+        axios.post('http://localhost:8080/login', {login: login, password: password})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
                 auth.login(()=>props.history.push("/dashboard"))

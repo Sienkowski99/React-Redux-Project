@@ -15,7 +15,7 @@ function Register(props) {
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)
-        axios.post('http://172.18.144.1:8080/register', {login: login, password: password, email: email})
+        axios.post('http://localhost:8080/register', {login: login, password: password, email: email})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
                 alert(result.data.msg)

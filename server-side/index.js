@@ -5,6 +5,9 @@ const port = 8080
 const sha256 = require('js-sha256')
 app.use(express.json());
 
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 const User = require('./models/User');
 const mongoose = require('mongoose');
 mongoose
@@ -20,6 +23,11 @@ app.use(cors())
 app.get('/', (req, res) => {
   User.find().then(result => console.log(result))
   res.send('Backed of Friends Schedule!')
+})
+
+app.post('/upload_avatar', upload.single('avatar'), (req, res) => {
+  console.log("Someone wants to upload an avatar")
+  console.log(req.body)
 })
 
 app.post('/register', (req, res) => {
