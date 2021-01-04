@@ -29,79 +29,9 @@ const SacrificeForm = (props) => {
 
     return (
         <div>
-            <form
-                onSubmit={handleSubmit}
-                style={{
-                    // backgroundColor: "blue",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "space-around",
-                    width: "25%",
-                    height: "35vh",
-                }}
-                >
-                <label>
-                    Pick the date and time that you're willing to sacrifice for meeting
-                    up with friends. Everything will be updated in real time.
-                </label>
-                <input
-                    type="datetime-local"
-                    id="freeTime"
-                    name="freeTime"
-                    min={new Date()}
-                    max="2021-12-31T00:00"
-                    onChange={(e) => {
-                    setPickedDate(e.target.value);
-                    console.log(e.target.value);
-                    }}
-                    style={{
-                    backgroundColor: "#e7e7e7",
-                    color: "black",
-                    border: "none",
-                    padding: "5px 10px",
-                    textAlign: "center",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                    // borderRadius: "10%",
-                    // marginTop: "10px",
-                    }}
-                />
-                <label>
-                    You can add a comment - for exapmle - how much time you'd like to
-                    spend or what's your idea for a meeting.
-                </label>
-                <input
-                    type="text"
-                    style={{ width: "75%" }}
-                    onChange={(e) => {
-                    setMsgToDate(e.target.value);
-                    }}
-                />
-                <button
-                    type="submit"
-                    style={{
-                    backgroundColor: "#e7e7e7",
-                    color: "black",
-                    border: "none",
-                    padding: "5px 10px",
-                    textAlign: "center",
-                    textDecoration: "none",
-                    display: "inline-block",
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                    borderRadius: "10%",
-                    }}
-                >
-                    Sacrifice 🙏
-                </button>
-            </form>
-
             <Formik
                 initialValues={{
-                        date: null,
+                        date: "",
                         text: ""
                         // symbol: data.find(x=>x.id===szczegoloweID).symbol,
                         // type: data.find(x=>x.id===szczegoloweID).type,
@@ -131,13 +61,17 @@ const SacrificeForm = (props) => {
                     // }
                     return errors;
                 }}
-                onSubmit= {(values) => {
+                onSubmit= {(values, actions) => {
                     console.log(values)
                     // const bezZmienianego = data.filter(x=>x.id!==szczegoloweID)
                     // const values2 = {...values,id: szczegoloweID}
                     // setData([...bezZmienianego,values2])
                     // setczyedit("nie")
-                    axios.get("http://localhost:8080").then(result => alert(result.data)).catch(err => alert(err))
+                    axios.get("http://localhost:8080").then(result => {
+                        alert(result.data); 
+                        actions.resetForm()
+                        // this.reset()
+                    }).catch(err => alert(err))
                 }}
             >
                 {({
@@ -147,8 +81,20 @@ const SacrificeForm = (props) => {
                     handleChange,
                     handleSubmit,
                 }) => (
-                <form onSubmit={handleSubmit}>
-                    <label>Data i czas </label>
+                <form onSubmit={handleSubmit} style={{
+                    // backgroundColor: "blue",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    width: "25%",
+                    height: "35vh",
+                }}>
+                    <label>
+                        Pick the date and time that you're willing to sacrifice for meeting
+                        up with friends. Everything will be updated in real time.
+                    </label>
+                    <br/>
                     <input
                         type="datetime-local"
                         name="date"
@@ -157,19 +103,37 @@ const SacrificeForm = (props) => {
                     />
                     {errors.data && touched.data && errors.data}
                     <br/>
-                    <label>Message </label>
+                    <label>
+                        You can add a comment - for exapmle - how much time you'd like to
+                        spend or what's your idea for a meeting.
+                    </label>
                     <input
                         type="text"
                         name="text"
                         onChange={handleChange}
                         value={values.text}
+                        style={{ width: "75%" }}
                     />
                     {errors.text && touched.text && errors.text}
                     <br/>
                     <br/>
-                    <button type="submit" style={{backgroundColor: "green",padding: "5px",fontWeight: "bold",color: "lightgray"}}>
-                        Submit
-                    </button>
+                    <button
+                    type="submit"
+                    style={{
+                    backgroundColor: "#e7e7e7",
+                    color: "black",
+                    border: "none",
+                    padding: "5px 10px",
+                    textAlign: "center",
+                    textDecoration: "none",
+                    display: "inline-block",
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    borderRadius: "10%",
+                    }}
+                >
+                    Sacrifice 🙏
+                </button>
                 </form>
                 )}
             </Formik>

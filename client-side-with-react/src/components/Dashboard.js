@@ -5,10 +5,34 @@ import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import SacrificeForm from './SacrificeForm'
 import { connect } from "react-redux";
+import axios from 'axios';
+import { useEffect } from 'react';
+import MonthDisplay from './MonthDisplay'
 
 function Dashboard(props) {
     // console.log(props.auth)
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
 
+    useEffect(()=>{
+        const today = new Date()
+        axios.post("http://localhost:8080/get_year", {year: today.getFullYear()}).then(result => {
+            props.swapYear(result, months[today.getMonth()])
+        })
+    },[])
+    
     
     return (
         <div className="all">
@@ -20,24 +44,29 @@ function Dashboard(props) {
             <h1>Dashboard</h1>  
             <br/>
             <SacrificeForm/>
+            {/* <button onClick={()=>{props.nextMonth()}}>SNO</button> */}
+            {props.year.month_to_display ? <MonthDisplay/> : null}
+            
         </div>
     )
 }
 
 function mapStateToProps(state) {
     return {
-        displayedDaysReducer: state.displayedDays,
+        month: state.displayedDays,
+        year: state.year,
         auth: state.auth,
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        nextMonth: () => dispatch(({type: "NEXT_Month"})),
-        prevMonth: () => dispatch(({type: "PREV_Month"}))
+        nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
+        prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
+        nextYear: () => dispatch(({type: "NEXT_YEAR"})),
+        prevYear: () => dispatch(({type: "PREV_YEAR"})),
+        swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
     }
 }
   
-  
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
-// export default connect()(Dashboard);

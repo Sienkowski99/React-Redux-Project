@@ -2,9 +2,12 @@ import Cookies from 'js-cookie'
 import auth from '../components/auth'
 
 const authReducer = (state = {authenticated: false}, action) => {
-    console.log(action.type)
+    // console.log(action.type)
     let x = state
     switch(action.type) {
+        case 'SIEMA':
+            console.log("SIEMA")
+            return state
         case 'LOG_IN':
             // let x = state
             x.authenticated = true
