@@ -23,9 +23,12 @@ const MonthDisplay = (props) => {
         // console.log(months.indexOf(props.month.name))
         if (months.indexOf(props.year.month_to_display.name)+1>11){
             // props.nextYear()
+            console.log("next_year")
             props.setYear(props.year.name+1, months[0])
+        } else {
+            console.log("next_month")
+            props.setMonth(props.year, months[months.indexOf(props.year.month_to_display.name)+1])
         }
-        console.log("next")
     } 
 
     const handlePrevious = () => {
@@ -33,9 +36,13 @@ const MonthDisplay = (props) => {
         // console.log(months.indexOf(props.month.name))
         if (months.indexOf(props.year.month_to_display.name)-1<0){
             // props.prevYear()
+            console.log("prev_year")
             props.setYear(props.year.name-1, months[11])
         } else {
-
+            console.log("prev_month")
+            console.log(months.indexOf(props.year.month_to_display))
+            console.log(months[months.indexOf(props.year.month_to_display)-1])
+            props.setMonth(props.year, months[months.indexOf(props.year.month_to_display.name)-1])
         }
         console.log("prev")
     } 
@@ -80,7 +87,7 @@ const MonthDisplay = (props) => {
                     >
                     🢀 Previous
                     </button>
-                    <h2>{props.year.month_to_display.name}</h2>
+                    <h2>{props.year.month_to_display.name} of {props.year.name}</h2>
                     <button
                     style={{
                         backgroundColor: "#e7e7e7",
@@ -105,7 +112,7 @@ const MonthDisplay = (props) => {
 
 function mapStateToProps(state) {
     return {
-        month: state.displayedDays,
+        // month: state.displayedDays,
         year: state.year,
         auth: state.auth,
     };
@@ -114,11 +121,12 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
-        nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
-        prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
-        nextYear: () => dispatch(({type: "NEXT_YEAR"})),
-        prevYear: () => dispatch(({type: "PREV_YEAR"})),
-        swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
+        setMonth: (year, month) => dispatch(operations.changeMonth(year, month)),
+        // nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
+        // prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
+        // nextYear: () => dispatch(({type: "NEXT_YEAR"})),
+        // prevYear: () => dispatch(({type: "PREV_YEAR"})),
+        // swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
     }
 }
 

@@ -8,11 +8,8 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import { useEffect } from 'react';
 import MonthDisplay from './MonthDisplay'
+import operations from '../operations/index'
 
-
-const actionsCreators = {
-
-}
 
 function Dashboard(props) {
     // console.log(props.auth)
@@ -33,9 +30,11 @@ function Dashboard(props) {
 
     useEffect(()=>{
         const today = new Date()
-        axios.post("http://localhost:8080/get_year", {year: today.getFullYear()}).then(result => {
-            props.swapYear(result, months[today.getMonth()])
-        })
+        console.log(today.getFullYear())
+        props.setYear(today.getFullYear(), months[today.getMonth()])
+        // axios.post("http://localhost:8080/get_year", {year: today.getFullYear()}).then(result => {
+        //     props.setYear(today.getFullYear(), months[today.getMonth()])
+        // })
     },[])
     
     
@@ -66,11 +65,12 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
-        prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
-        nextYear: () => dispatch(({type: "NEXT_YEAR"})),
-        prevYear: () => dispatch(({type: "PREV_YEAR"})),
-        swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
+        setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
+        // nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
+        // prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
+        // nextYear: () => dispatch(({type: "NEXT_YEAR"})),
+        // prevYear: () => dispatch(({type: "PREV_YEAR"})),
+        // swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
     }
 }
   

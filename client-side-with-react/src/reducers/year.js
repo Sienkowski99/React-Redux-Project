@@ -1,50 +1,46 @@
-import axios from "axios";
-
 const yearReducer = (state = {}, action) => {
     console.log(action.type)
     switch(action.type) {
         case "SET_YEAR":
             console.log("CHANGING YEAR")
             console.log(action.payload)
-            // return {
-            //     name: action.payload.yearAndMonth.name,
-            //     months: action.payload.yearAndMonth.months,
-            //     month_to_display: action.payload.yearAndMonth.month_to_display
-            // }
             return {...action.payload}
-            return {name: "SIEMA"}
-        case "SWAP":
+        case "SET_MONTH":
+            console.log("CHANGING MONTH")
             console.log(action.payload)
-            // return {...action.payload.year.data}
-            const obj = {
-                name: action.payload.year.data.year,
-                months: action.payload.year.data.months,
-                month_to_display: action.payload.year.data.months.filter(month => month.name === action.payload.month_to_display)[0]
-            }
-            console.log(obj)
-            return {...obj}
-        case "NEXT_YEAR":
-            console.log("NEXT")
-            axios.post()
-            return state
-        case "PREV_YEAR":
-            console.log("PREV")
-            axios.post("http://localhost:8080/get_year", {year: state.name-1})
-            .then(result => {
-                console.log(result)
-                const obj = {
-                    name: result.data.year,
-                    months: result.data.months,
-                    month_to_display: result.data.months.filter(month => month.name === "December")[0]
-                }
-                return {...obj}
-                // props.swapYear(result, months[today.getMonth()])
-            })
-            .then(obj => obj)
-            .catch(err=>console.log(err))
-            // return state
-        case 'null':
-            return state
+            return {...state, month_to_display: state.months.filter(month => month.name === action.payload)[0]}
+        // case "SWAP":
+        //     console.log(action.payload)
+        //     // return {...action.payload.year.data}
+        //     const obj = {
+        //         name: action.payload.year.data.year,
+        //         months: action.payload.year.data.months,
+        //         month_to_display: action.payload.year.data.months.filter(month => month.name === action.payload.month_to_display)[0]
+        //     }
+        //     console.log(obj)
+        //     return {...obj}
+        // case "NEXT_YEAR":
+        //     console.log("NEXT")
+        //     axios.post()
+        //     return state
+        // case "PREV_YEAR":
+        //     console.log("PREV")
+        //     axios.post("http://localhost:8080/get_year", {year: state.name-1})
+        //     .then(result => {
+        //         console.log(result)
+        //         const obj = {
+        //             name: result.data.year,
+        //             months: result.data.months,
+        //             month_to_display: result.data.months.filter(month => month.name === "December")[0]
+        //         }
+        //         return {...obj}
+        //         // props.swapYear(result, months[today.getMonth()])
+        //     })
+        //     .then(obj => obj)
+        //     .catch(err=>console.log(err))
+        //     // return state
+        // case 'null':
+        //     return state
         default:
             return state
     }

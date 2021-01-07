@@ -32,10 +32,26 @@ app.post('/upload_avatar', upload.single('avatar'), (req, res) => {
 })
 
 app.post('/get_year', (req, res) => {
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+
   console.log(req.body)
   Year.find({year: req.body.year}).then(result => {
     console.log(result);
-    res.send(result[0])
+    if (result.length) {
+      response_object.msg = "OK"
+      response_object.content = result[0]
+      response_object.statusCode = 200
+      res.send(response_object)
+    } else {
+      response_object.msg = "Year not found"
+      response_object.content = []
+      response_object.statusCode = 401
+      res.send(response_object)
+    }
   }).catch(err=> {
     console.log(err);
     res.send(err)
