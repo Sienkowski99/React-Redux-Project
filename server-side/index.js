@@ -32,6 +32,7 @@ app.post('/upload_avatar', upload.single('avatar'), (req, res) => {
 })
 
 app.post('/get_year', (req, res) => {
+  console.log(req.body)
   Year.find({year: req.body.year}).then(result => {
     console.log(result);
     res.send(result[0])
@@ -42,7 +43,7 @@ app.post('/get_year', (req, res) => {
 })
 
 // const year2020 = new Year({
-//   year: 2022,
+//   year: 2020,
 //   months: [
 //   {
 //       name: "January",

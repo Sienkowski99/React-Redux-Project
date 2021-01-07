@@ -9,6 +9,11 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import MonthDisplay from './MonthDisplay'
 
+
+const actionsCreators = {
+
+}
+
 function Dashboard(props) {
     // console.log(props.auth)
     const months = [

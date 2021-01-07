@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-
+import {operations} from '../operations'
 
 const MonthDisplay = (props) => {
 
@@ -17,12 +17,13 @@ const MonthDisplay = (props) => {
         "November",
         "December",
     ];
-    
+
     const handleNext = () => {
         // console.log(props.month)
         // console.log(months.indexOf(props.month.name))
-        if (months.indexOf(props.month.name)+1>11){
-            props.nextYear()
+        if (months.indexOf(props.year.month_to_display.name)+1>11){
+            // props.nextYear()
+            props.setYear(props.year.name+1, months[0])
         }
         console.log("next")
     } 
@@ -30,8 +31,9 @@ const MonthDisplay = (props) => {
     const handlePrevious = () => {
         // console.log(props.month)
         // console.log(months.indexOf(props.month.name))
-        if (months.indexOf(props.month.name)-1<0){
-            props.prevYear()
+        if (months.indexOf(props.year.month_to_display.name)-1<0){
+            // props.prevYear()
+            props.setYear(props.year.name-1, months[11])
         } else {
 
         }
@@ -111,6 +113,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
         nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
         prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
         nextYear: () => dispatch(({type: "NEXT_YEAR"})),
