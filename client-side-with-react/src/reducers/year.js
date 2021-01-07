@@ -5,7 +5,14 @@ const yearReducer = (state = {}, action) => {
     switch(action.type) {
         case "SET_YEAR":
             console.log("CHANGING YEAR")
-            return {...payload.yearAndMonth}
+            console.log(action.payload)
+            // return {
+            //     name: action.payload.yearAndMonth.name,
+            //     months: action.payload.yearAndMonth.months,
+            //     month_to_display: action.payload.yearAndMonth.month_to_display
+            // }
+            return {...action.payload}
+            return {name: "SIEMA"}
         case "SWAP":
             console.log(action.payload)
             // return {...action.payload.year.data}

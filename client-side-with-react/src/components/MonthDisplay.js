@@ -1,5 +1,5 @@
 import {connect} from 'react-redux'
-import {operations} from '../operations'
+import operations from '../operations/index'
 
 const MonthDisplay = (props) => {
 
