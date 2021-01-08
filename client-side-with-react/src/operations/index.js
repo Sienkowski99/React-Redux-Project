@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {setYearAndMonth, setMonth} from '../actions'
+import {setYearAndMonth, setMonth, logIN, logOUT} from '../actions'
 
 const getYearAndMonth = (year, req_month) => async dispatch => {
     console.log(year + req_month)
@@ -26,26 +26,22 @@ const getYearAndMonth = (year, req_month) => async dispatch => {
 }
 
 const changeMonth = (year, req_month) => async dispatch => {
-    // const year_obj = await axios.post("http://localhost:8080/get_year", {year: year})
-    // .then(result => {
-    //     console.log(result)
-    //     if (result.statusCode >= 200 && result.statusCode < 300) {
-            
-    //         return obj
-    //     } else {
-    //         alert("YEAR NOT IN DB")
-    //     }
-        
-    // })
-    // const obj = {
-    //     month_to_display: result.data.months.filter(month => month.name === req_month)[0]
-    // }
     dispatch(setMonth(req_month))
+}
+
+const login = (login) => async dispatch => {
+    dispatch(logIN(login))
+}
+
+const logout = () => async dispatch => {
+    dispatch(logOUT())
 }
 
 const operations = {
     getYearAndMonth,
-    changeMonth
+    changeMonth,
+    login,
+    logout
 }
   
 export default operations

@@ -9,6 +9,7 @@ import Cookies from 'js-cookie'
 import {useEffect} from 'react'
 // import {Link, Router} from 'react-router-dom'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import operations from './operations/index'
 
 
 import Home from './components/Home'
@@ -16,6 +17,19 @@ import Profile from './components/Profile'
 import Register from './components/Register'
 
 function App(props) {
+
+  // useEffect(()=>{
+  //   const auth_state = Cookies.getJSON('auth')
+  //   console.log(auth_state)
+  //   if (auth_state !== undefined && auth_state.authenticated === true) {
+  //     // this.authenticated = true;
+  //     // this.user = auth_state.user;
+  //     props.login(auth_state.user)
+  //   } else {
+  //     // this.authenticated = false;
+  //     props.logout()
+  //   }
+  // }, [])
 
   return (
     <div className="App">
@@ -45,8 +59,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      login: () => dispatch(({type: "LOG_IN"})),
-      logout: () => dispatch(({type: "LOG_OUT"}))
+      login: (login) => dispatch(operations.login(login)),
+      logout: () => dispatch(operations.logout())
   }
 }
 

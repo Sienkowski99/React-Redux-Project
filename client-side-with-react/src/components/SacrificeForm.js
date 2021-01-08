@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { useState } from "react";
 import {Formik} from 'formik'
+import operations from '../operations/index'
+import { connect } from "react-redux";
 
 const SacrificeForm = (props) => {
+    console.log(props)
     const [pickedDate, setPickedDate] = useState(new Date());
 
     const months = [
@@ -67,8 +70,11 @@ const SacrificeForm = (props) => {
                     // const values2 = {...values,id: szczegoloweID}
                     // setData([...bezZmienianego,values2])
                     // setczyedit("nie")
-                    axios.get("http://localhost:8080").then(result => {
-                        alert(result.data); 
+                    const obj = {...values, user: props.user}
+                    console.log(obj)
+                    axios.post("http://localhost:8080/add_term", obj).then(result => {
+                        console.log(result.data); 
+                        props.setYear(props.year.name, props.year.month_to_display.name)
                         actions.resetForm()
                         // this.reset()
                     }).catch(err => alert(err))
@@ -141,4 +147,17 @@ const SacrificeForm = (props) => {
         </div>
     )
 }
-export default SacrificeForm;
+
+function mapStateToProps(state) {
+    return {
+        year: state.year,
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SacrificeForm);

@@ -5,15 +5,16 @@ class Auth {
     const auth_state = Cookies.getJSON('auth')
     if (auth_state !== undefined && auth_state.authenticated === true) {
       this.authenticated = true;
+      this.user = auth_state.user;
 
     } else {
       this.authenticated = false;
     }
   }
 
-  login(cb) {
+  login(user, cb) {
     this.authenticated = true;
-    Cookies.set('auth', {authenticated: true}, {expires: 1/48})
+    Cookies.set('auth', {authenticated: true, user: user}, {expires: 1/48})
     cb();
   }
 
@@ -29,7 +30,7 @@ class Auth {
   }
 
   isAuthenticated() {
-    return this.authenticated;
+    return {authenticated: this.authenticated, user: this.user};
   }
 }
 

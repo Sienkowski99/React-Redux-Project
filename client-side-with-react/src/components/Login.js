@@ -18,7 +18,8 @@ function Login(props) {
         axios.post('http://localhost:8080/login', {login: login, password: password})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
-                auth.login(()=>props.history.push("/dashboard"))
+                props.login(login)
+                auth.login(login, ()=>props.history.push("/dashboard"))
             } else {
                 alert(result.data.msg)
             }
@@ -51,7 +52,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        login: () => dispatch(({type: "LOG_IN"})),
+        login: (login) => dispatch(({type: "LOG_IN", payload: login})),
         logout: () => dispatch(({type: "LOG_OUT"}))
     }
 }

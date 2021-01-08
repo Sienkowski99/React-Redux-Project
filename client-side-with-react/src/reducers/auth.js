@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 import auth from '../components/auth'
 
-const authReducer = (state = {authenticated: false}, action) => {
+const authReducer = (state = {authenticated: false, user: null}, action) => {
     // console.log(action.type)
     let x = state
     switch(action.type) {
@@ -10,16 +10,19 @@ const authReducer = (state = {authenticated: false}, action) => {
             return state
         case 'LOG_IN':
             // let x = state
-            x.authenticated = true
-            console.log(x)
-            Cookies.set('auth', {authenticated: true})
-            return {...x}
+            // x.authenticated = true
+            // console.log(x)s
+            // Cookies.set('auth', {authenticated: true})
+            // if (!state.authenticated) {
+            //     return {authenticated: true, user: action.payload}
+            // }
+            return {authenticated: true, user: action.payload}
         case 'LOG_OUT':
             // let x = state
-            x.authenticated = false
-            console.log(x)
-            Cookies.remove('auth')
-            return {...x}
+            // x.authenticated = false
+            // console.log(x)
+            // Cookies.remove('auth')
+            return {authenticated: false, user: null}
         default:
             return state
     }

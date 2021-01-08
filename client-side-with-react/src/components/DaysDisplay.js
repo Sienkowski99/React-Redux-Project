@@ -1,8 +1,10 @@
+import Day from "./Day"
+
 const DaysDisplay = (props) => {
     console.log(props)
     return (
-        <div>
-            {props.month.days.map(day=><p>{day.day}</p>)}
+        <div style={{width: "100%"}}>
+            {props.month.days.map(day=><Day data={day}/>)}
         </div>
     )
 }

@@ -4,11 +4,11 @@ import auth from '../components/auth'
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import SacrificeForm from './SacrificeForm'
-import { connect } from "react-redux";
 import axios from 'axios';
 import { useEffect } from 'react';
 import MonthDisplay from './MonthDisplay'
 import operations from '../operations/index'
+import { connect } from "react-redux";
 
 
 function Dashboard(props) {
@@ -43,11 +43,11 @@ function Dashboard(props) {
             <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Link to="/profile"><h1>Profile</h1></Link>
                 <h1 style={{margin: "0", fontSize: "50px", color: "#FFF1CE"}}>Friends Schedule</h1>
-                <Button variant="contained" color="primary" onClick={()=>{auth.logout(()=>props.history.push("/"))}}>Log out</Button>
+                <Button variant="contained" color="primary" onClick={()=>{props.logout(); auth.logout(()=>props.history.push("/"))}}>Log out</Button>
             </nav>
             <h1>Dashboard</h1>  
             <br/>
-            <SacrificeForm/>
+            <SacrificeForm user={props.auth.user}/>
             {/* <button onClick={()=>{props.nextMonth()}}>SNO</button> */}
             {props.year.month_to_display ? <MonthDisplay/> : null}
             
@@ -66,6 +66,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
+        logout: () => dispatch(operations.logout())
         // nextMonth: (month) => dispatch(({type: "NEXT_MONTH", payload: {month: month}})),
         // prevMonth: (month) => dispatch(({type: "PREV_MONTH", payload: {month: month}})),
         // nextYear: () => dispatch(({type: "NEXT_YEAR"})),

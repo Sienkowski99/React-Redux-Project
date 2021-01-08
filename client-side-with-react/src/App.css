@@ -4,6 +4,9 @@
   color: white;
 }
 
+h1 {
+  margin: 0;
+}
 .all {
   /* position: fixed; */
   margin: 0;
@@ -13,6 +16,7 @@
   height: 100%;
   width: 100%;
 }
+
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;
