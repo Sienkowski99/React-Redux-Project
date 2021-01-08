@@ -1,5 +1,7 @@
 import {connect} from 'react-redux'
 import operations from '../operations/index'
+import DaysDisplay from './DaysDisplay'
+import PickFilters from "./PickFilters"
 
 const MonthDisplay = (props) => {
 
@@ -61,6 +63,7 @@ const MonthDisplay = (props) => {
                 padding: "0 40px",
             }}
             >
+                <PickFilters/>
                 <div 
                 style={{
                 display: "flex",
@@ -106,6 +109,7 @@ const MonthDisplay = (props) => {
                     Next 🢂
                     </button>
                 </div>
+                <DaysDisplay month={props.year.month_to_display}/>
         </div>
     )
 }
