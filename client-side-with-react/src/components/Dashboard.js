@@ -45,12 +45,13 @@ function Dashboard(props) {
                 <h1 style={{margin: "0", fontSize: "50px", color: "#FFF1CE"}}>Friends Schedule</h1>
                 <Button variant="contained" color="primary" onClick={()=>{props.logout(); auth.logout(()=>props.history.push("/"))}}>Log out</Button>
             </nav>
-            <h1>Dashboard</h1>  
-            <br/>
-            <SacrificeForm user={props.auth.user}/>
-            {/* <button onClick={()=>{props.nextMonth()}}>SNO</button> */}
-            {props.year.month_to_display ? <MonthDisplay/> : null}
-            
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+                <h1>Dashboard</h1>  
+                <br/>
+                <SacrificeForm user={props.auth.user}/>
+                {/* <button onClick={()=>{props.nextMonth()}}>SNO</button> */}
+                {props.year.month_to_display ? <MonthDisplay/> : null}
+            </div> 
         </div>
     )
 }

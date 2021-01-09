@@ -86,9 +86,14 @@ const Post = (props) => {
 
     return (
         <div style={comment_div_style}>
-            <h1>{props.post.author}</h1>
-            <p>{props.post.content}</p>
             <div style={{display: "flex", flexDirection: "row"}}>
+                <div style={{width: "20%", display: "flex", flexDirection: "column"}}>
+                    <h2>{props.post.author} </h2>
+                    <h2>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</h2>
+                </div>
+                <p>{props.post.content}</p>
+            </div>
+            <div style={{display: "flex", flexDirection: "row", width:"20%", justifyContent: "center"}}>
                 <p>{props.post.likes}</p>
                 <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
                 <p>{props.post.dislikes}</p>

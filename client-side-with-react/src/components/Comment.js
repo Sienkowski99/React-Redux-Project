@@ -8,13 +8,13 @@ const Comment = (props) => {
         flexDirection: "row",
         backgroundColor: "#ababab",
         padding: "5px",
-        justifyContent: "space-around",
+        // justifyContent: "space-around",
         alignItems: "center"
     }
 
     return (
         <div className="comment" style={comment_div_style}>
-            <h3>{props.comment.author} : </h3>
+            <h3 style={{width: "20%"}}>{props.comment.author} : </h3>
             <p>{props.comment.content}</p>
             <div style={{display: "flex", flexDirection: "row"}}>
                 {/* <p>{props.comment.likes}</p>

@@ -185,6 +185,7 @@ app.post('/add_term', (req, res) => {
   console.log(req.body)
   const req_date = new Date(req.body.date)
   const post = {
+        date: req_date,
         author: req.body.user,
         content: req.body.text,
         likes: 0,

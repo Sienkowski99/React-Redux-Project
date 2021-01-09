@@ -93,8 +93,10 @@ const SacrificeForm = (props) => {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "space-around",
-                    width: "25%",
-                    height: "35vh",
+                    // width: "25%",
+                    // height: "35vh",
+                    padding: "50px 0",
+                    borderBottom: "solid white 2px"
                 }}>
                     <label>
                         Pick the date and time that you're willing to sacrifice for meeting
