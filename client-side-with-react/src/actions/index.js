@@ -2,6 +2,7 @@ export const SET_YEAR = "SET_YEAR"
 export const SET_MONTH = "SET_MONTH"
 export const LOG_IN = "LOG_IN"
 export const LOG_OUT = "LOG_OUT"
+export const FILTER_BY_AUTHOR = "FILTER_BY_AUTHOR"
 
 export const setYearAndMonth = (yearAndMonth) => ({
     type: SET_YEAR,
@@ -20,4 +21,9 @@ export const logIN = (login) => ({
 
 export const logOUT = () => ({
     type: LOG_OUT,
+})
+
+export const filterByAUTHOR = (author) => ({
+    type: FILTER_BY_AUTHOR,
+    payload: author
 })

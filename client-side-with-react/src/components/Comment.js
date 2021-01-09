@@ -1,6 +1,6 @@
 const Comment = (props) => {
 
-    console.log("TU KOMENTARZ GDZIE PROPSY"+props.comment)
+    // console.log("TU KOMENTARZ GDZIE PROPSY"+props.comment)
     const comment_div_style = {
         // border: "solid blue 2px",
         // width: "100%",

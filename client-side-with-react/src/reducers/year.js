@@ -1,46 +1,19 @@
-const yearReducer = (state = {}, action) => {
+const yearReducer = (state = {activeFilters: []}, action) => {
     console.log(action.type)
     switch(action.type) {
         case "SET_YEAR":
             console.log("CHANGING YEAR")
             console.log(action.payload)
-            return {...action.payload}
+            return {...state, ...action.payload}
         case "SET_MONTH":
             console.log("CHANGING MONTH")
             console.log(action.payload)
             return {...state, month_to_display: state.months.filter(month => month.name === action.payload)[0]}
-        // case "SWAP":
-        //     console.log(action.payload)
-        //     // return {...action.payload.year.data}
-        //     const obj = {
-        //         name: action.payload.year.data.year,
-        //         months: action.payload.year.data.months,
-        //         month_to_display: action.payload.year.data.months.filter(month => month.name === action.payload.month_to_display)[0]
-        //     }
-        //     console.log(obj)
-        //     return {...obj}
-        // case "NEXT_YEAR":
-        //     console.log("NEXT")
-        //     axios.post()
-        //     return state
-        // case "PREV_YEAR":
-        //     console.log("PREV")
-        //     axios.post("http://localhost:8080/get_year", {year: state.name-1})
-        //     .then(result => {
-        //         console.log(result)
-        //         const obj = {
-        //             name: result.data.year,
-        //             months: result.data.months,
-        //             month_to_display: result.data.months.filter(month => month.name === "December")[0]
-        //         }
-        //         return {...obj}
-        //         // props.swapYear(result, months[today.getMonth()])
-        //     })
-        //     .then(obj => obj)
-        //     .catch(err=>console.log(err))
-        //     // return state
-        // case 'null':
-        //     return state
+        case "FILTER_BY_AUTHOR":
+            console.log(action.payload)
+            const new_state = {...state}
+            console.log(new_state)
+            return state
         default:
             return state
     }

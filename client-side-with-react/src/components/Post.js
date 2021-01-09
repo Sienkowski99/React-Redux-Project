@@ -11,10 +11,11 @@ const Post = (props) => {
     const comment_div_style = {
         border: "solid black 2px",
         padding: "5px",
-        width: "100%",
+        // width: "100%",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "grey",
+        marginBottom: "10px"
     }
 
     const handleAddComment = (e, id) => {
@@ -91,7 +92,9 @@ const Post = (props) => {
                     <h2>{props.post.author} </h2>
                     <h2>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</h2>
                 </div>
-                <p>{props.post.content}</p>
+                <div style={{border: "solid black 1px", paddiing: "5px", height: "100%", flexGrow: "1", wordWrap: "break-word"}}>
+                    <p>{props.post.content}</p>
+                </div>
             </div>
             <div style={{display: "flex", flexDirection: "row", width:"20%", justifyContent: "center"}}>
                 <p>{props.post.likes}</p>
@@ -108,7 +111,7 @@ const Post = (props) => {
             }}>
                 <label>Add comment </label>
                 <input type="text" style={{width: "50%"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
-                <button type="submit">add</button>
+                <button type="submit" style={{justifySelf:"flex-end"}}>Send</button>
             </form>
         </div>
     )
