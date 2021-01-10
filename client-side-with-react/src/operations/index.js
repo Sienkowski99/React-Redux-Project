@@ -46,7 +46,8 @@ const sortByLikes = (type) => async dispatch => {
     dispatch(sortByLIKES(type))
 }
 
-const sortByDislikes = (type) => async dispatch => {
+const sortByDislikes = (type) => async (dispatch, state) => {
+    console.log(state())
     dispatch(sortByDISLIKES(type))
 }
 
