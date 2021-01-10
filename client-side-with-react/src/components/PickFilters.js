@@ -21,11 +21,11 @@ const PickFilters = (props) => {
 
     const handleSortByLikes = (type) => {
         console.log("Applying sorting :", type)
-
+        props.sortByLikes(type)
     }
     const handleSortByDislikes = (type) => {
         console.log("Applying sorting :", type)
-
+        props.sortByDislikes(type)
     }
 
     return(
@@ -60,7 +60,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
-        filterByAuthor: (author) => dispatch(operations.filterByAuthor(author))
+        filterByAuthor: (author) => dispatch(operations.filterByAuthor(author)),
+        sortByLikes: (type) => dispatch(operations.sortByLikes(type)),
+        sortByDislikes: (type) => dispatch(operations.sortByDislikes(type))
     }
 }
 

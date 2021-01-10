@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {setYearAndMonth, setMonth, logIN, logOUT, filterByAUTHOR} from '../actions'
+import {setYearAndMonth, setMonth, logIN, logOUT, filterByAUTHOR, sortByDISLIKES, sortByLIKES} from '../actions'
 
 const getYearAndMonth = (year, req_month) => async dispatch => {
     console.log(year + req_month)
@@ -42,12 +42,22 @@ const filterByAuthor = (author) => async dispatch => {
     dispatch(filterByAUTHOR(author))
 }
 
+const sortByLikes = (type) => async dispatch => {
+    dispatch(sortByLIKES(type))
+}
+
+const sortByDislikes = (type) => async dispatch => {
+    dispatch(sortByDISLIKES(type))
+}
+
 const operations = {
     getYearAndMonth,
     changeMonth,
     login,
     logout,
-    filterByAuthor
+    filterByAuthor,
+    sortByLikes,
+    sortByDislikes
 }
   
 export default operations

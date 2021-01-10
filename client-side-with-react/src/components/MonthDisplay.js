@@ -109,7 +109,7 @@ const MonthDisplay = (props) => {
                     Next 🢂
                     </button>
                 </div>
-                <DaysDisplay month={props.year.month_to_display}/>
+                <DaysDisplay month={props.year.month_to_display_and_apply_filters}/>
         </div>
     )
 }
