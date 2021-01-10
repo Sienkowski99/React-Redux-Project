@@ -1,6 +1,41 @@
 import axios from 'axios'
 import {setYearAndMonth, setMonth, logIN, logOUT, filterByAUTHOR, sortByDISLIKES, sortByLIKES} from '../actions'
 
+const filter_and_sorter = (day_to_modify, activeFilters) => {
+    // FILTERS
+    const day = {...day_to_modify}
+    if (activeFilters.filters.author) {
+        day.availablePeople.filter(post => post.author.includes(activeFilters.filters.author) ? true : false)
+    }
+    //SORTERS
+    if (activeFilters.sorters.likes !== null) {
+        if (activeFilters.sorters.likes === "likes_inc") {
+            console.log(day.availablePeople)
+            day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
+            console.log(day.availablePeople)
+        }
+        if (activeFilters.sorters.likes === "likes_dic") {
+            console.log(day.availablePeople)
+            day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
+            console.log(day.availablePeople)
+        }
+    }
+    if (activeFilters.sorters.dislikes !== null) {
+
+        if (activeFilters.sorters.dislikes === "dislikes_inc") {
+            console.log(day.availablePeople)
+            day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
+            console.log(day.availablePeople)
+        }
+        if (activeFilters.sorters.dislikes === "dislikes_dic") {
+            console.log(day.availablePeople)
+            day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
+            console.log(day.availablePeople)
+        }
+    }
+    return day
+}
+
 const getYearAndMonth = (year, req_month) => async dispatch => {
     console.log(year + req_month)
     const year_obj = await axios.post("http://localhost:8080/get_year", {year: year})
@@ -42,13 +77,28 @@ const filterByAuthor = (author) => async dispatch => {
     dispatch(filterByAUTHOR(author))
 }
 
-const sortByLikes = (type) => async dispatch => {
-    dispatch(sortByLIKES(type))
+const sortByLikes = (type) => async (dispatch, state) => {
+    const year_state = state().year
+    if (type !== "none") {
+        year_state.activeFilters.sorters.likes = type
+    } else {
+        year_state.activeFilters.sorters.likes = null
+    }
+    year_state.month_to_display_and_apply_filters.days = year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
+    // console.log(year_state)
+    dispatch(sortByLIKES(year_state))
 }
 
 const sortByDislikes = (type) => async (dispatch, state) => {
-    console.log(state())
-    dispatch(sortByDISLIKES(type))
+    const year_state = state().year
+    if (type !== "none") {
+        year_state.activeFilters.sorters.dislikes = type
+    } else {
+        year_state.activeFilters.sorters.dislikes = null
+    }
+    year_state.month_to_display_and_apply_filters.days = year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
+    // console.log(year_state)
+    dispatch(sortByDISLIKES(year_state))
 }
 
 const operations = {

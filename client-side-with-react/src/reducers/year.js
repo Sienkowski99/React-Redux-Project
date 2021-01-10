@@ -10,8 +10,6 @@ const initial_state = {
     }
 }
 
-let new_state = {}
-
 const yearReducer = (state = initial_state, action) => {
     const filter_and_sorter = (day_to_modify, activeFilters) => {
         console.log("RECIEVED DAY "+JSON.stringify(day_to_modify.availablePeople))
@@ -76,25 +74,20 @@ const yearReducer = (state = initial_state, action) => {
             console.log(new_state)
             return new_state
         case "SORT_BY_LIKES":
-            new_state = {...state}
-            if (action.payload !== "none") {
-                new_state.activeFilters.sorters.likes = action.payload
-            } else {
-                new_state.activeFilters.sorters.likes = null
-            }
-            new_state.month_to_display_and_apply_filters.days = new_state.month_to_display.days.map(day => filter_and_sorter(day, new_state.activeFilters))
-            console.log(new_state)
-            return new_state
-        case "SORT_BY_LIKES":
-            new_state = {...state}
-            if (action.payload !== "none") {
-                new_state.activeFilters.sorters.dislikes = action.payload
-            } else {
-                new_state.activeFilters.sorters.dislikes = null
-            }
-            new_state.month_to_display_and_apply_filters.days = new_state.month_to_display.days.map(day => filter_and_sorter(day, new_state.activeFilters))
-            console.log(new_state)
-            return new_state
+            // new_state = {...state}
+            // if (action.payload !== "none") {
+            //     new_state.activeFilters.sorters.likes = action.payload
+            // } else {
+            //     new_state.activeFilters.sorters.likes = null
+            // }
+            // new_state.month_to_display_and_apply_filters.days = new_state.month_to_display.days.map(day => filter_and_sorter(day, new_state.activeFilters))
+            // console.log(new_state)
+            // return new_state
+            return {...action.payload}
+        case "SORT_BY_DISLIKES":
+            // console.log("YEAR PAYLOAD")
+            // console.log(action.payload)
+            return {...action.payload}
         default:
             return state
     }
