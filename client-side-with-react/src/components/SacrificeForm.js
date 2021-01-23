@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { useState } from "react";
-import {Formik} from 'formik'
+// import {Formik} from 'formik'
 import operations from '../operations/index'
 import { connect } from "react-redux";
+import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const SacrificeForm = (props) => {
     console.log(props)
@@ -29,6 +32,12 @@ const SacrificeForm = (props) => {
       }
     
     const [msgToDate, setMsgToDate] = useState("");
+
+    const initialValues2 = {
+        comments: [
+            { author: props.user, content: '' }
+        ],
+      };
 
     return (
         <div>
@@ -139,13 +148,80 @@ const SacrificeForm = (props) => {
                     fontWeight: "bold",
                     borderRadius: "10%",
                     }}
-                >
-                    Sacrifice 🙏
-                </button>
+                    >
+                        Sacrifice 🙏
+                    </button>
                 </form>
                 )}
             </Formik>
-
+            
+            <Formik
+            initialValues={initialValues2}
+            onSubmit={async (values) => {
+                await new Promise((r) => setTimeout(r, 500));
+                alert(JSON.stringify(values, null, 2));
+            }}
+            >
+            {({ values }) => (
+                <Form>
+                <FieldArray name="comments">
+                    {({ insert, remove, push }) => (
+                    <div>
+                        {values.comments.length > 0 &&
+                        values.comments.map((post, index) => (
+                            <div className="row" key={index}>
+                            <div className="col">
+                                <label htmlFor={`comments.${index}.content`}>Content</label>
+                                <Field
+                                name={`comments.${index}.content`}
+                                placeholder="Sample text"
+                                type="text"
+                                />
+                                <ErrorMessage
+                                name={`comments.${index}.content`}
+                                component="div"
+                                className="field-error"
+                                />
+                            </div>
+                            {/* <div className="col">
+                                <label htmlFor={`friends.${index}.email`}>Email</label>
+                                <Field
+                                name={`friends.${index}.email`}
+                                placeholder="jane@acme.com"
+                                type="email"
+                                />
+                                <ErrorMessage
+                                name={`friends.${index}.name`}
+                                component="div"
+                                className="field-error"
+                                />
+                            </div> */}
+                            <div className="col">
+                                <button
+                                type="button"
+                                className="secondary"
+                                onClick={() => remove(index)}
+                                >
+                                Remove comment
+                                </button>
+                            </div>
+                            </div>
+                        ))}
+                        <button
+                        type="button"
+                        className="secondary"
+                        onClick={() => push({ author: props.user, content: '' })}
+                        >
+                        Add comment
+                        </button>
+                    </div>
+                    )}
+                </FieldArray>
+                <button type="submit">Add Post</button>
+                </Form>
+            )}
+            </Formik>
+ 
         </div>
     )
 }

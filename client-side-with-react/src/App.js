@@ -15,6 +15,7 @@ import operations from './operations/index'
 import Home from './components/Home'
 import Profile from './components/Profile'
 import Register from './components/Register'
+import ViewPost from './components/ViewPost';
 
 function App(props) {
 
@@ -44,6 +45,7 @@ function App(props) {
           {/* <ReverseProtectedRoute exact path='/register' component={Register}/> */}
           <ProtectedRoute exact path='/profile' component={Profile}/>
           <ProtectedRoute exact path='/dashboard' component={Dashboard}/>
+          <ProtectedRoute path="/posts/:postId" component={ViewPost}/>
           <Route path='*' component={NotFound}/>
         </Switch>
       </BrowserRouter>

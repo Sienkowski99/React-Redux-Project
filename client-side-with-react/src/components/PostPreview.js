@@ -3,8 +3,9 @@ import axios from 'axios'
 import operations from '../operations/index'
 import { connect } from "react-redux";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const Post = (props) => {
+const PostPreview = (props) => {
 
     const [comment_content, setComment_content] = useState("")
     // console.log("POST HERE"+JSON.stringify(props))
@@ -41,12 +42,25 @@ const Post = (props) => {
     } 
 
     const handleLike = (id) => {
-        // console.log("post id "+id)
-        props.likePost(id)
+        console.log("post id "+id)
+        axios.post("http://localhost:8080/like_post", {
+            year: props.year.name,
+            month: props.year.month_to_display.name,
+            day: props.day,
+            post_id: id
+        })
+        .then(result => {
+            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+                props.setYear(props.year.name, props.year.month_to_display.name)
+            } else {
+                console.log("error")
+            }
+        })
+        .catch(err=>console.log(err))
     }
 
     const handleDisLike = (id) => {
-        // console.log("post id "+id)
+        console.log("post id "+id)
         axios.post("http://localhost:8080/dislike_post", {
             year: props.year.name,
             month: props.year.month_to_display.name,
@@ -72,8 +86,15 @@ const Post = (props) => {
         }
     }
 
+    const handleDeletePost = (post_id) => {
+        console.log("Removing post with id: "+post_id)
+    }
+
     return (
-        <div style={comment_div_style}>
+        <div style={comment_div_style} onClick={()=>{
+            console.log("Post has been clicked");
+            console.log(props.post.id)
+        }}>
             <div style={{display: "flex", flexDirection: "row"}}>
                 <div style={{width: "20%", display: "flex", flexDirection: "column"}}>
                     <h2>{props.post.author} </h2>
@@ -83,23 +104,22 @@ const Post = (props) => {
                     <p>{props.post.content}</p>
                 </div>
             </div>
-            <div style={{display: "flex", flexDirection: "row", width:"20%", justifyContent: "center"}}>
-                <p>{props.post.likes}</p>
-                <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
-                <p>{props.post.dislikes}</p>
-                <button style={like_dislike_btn_style} onClick={()=>handleDisLike(props.post.id)}>👎</button>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <div style={{display: "flex", flexDirection: "row", width:"20%", justifyContent: "center"}}>
+                    <p>{props.post.likes}</p>
+                    <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
+                    <p>{props.post.dislikes}</p>
+                    <button style={like_dislike_btn_style} onClick={()=>handleDisLike(props.post.id)}>👎</button>
+                </div>
+                
+                <div style={{justifySelf: "center", width: "80%"}}>
+                    <Link to={{pathname: `posts/${props.post.id}`, post:{...props.post}}} style={{ textDecoration: 'none', color: "white" }}>
+                        <p style={{fontWeight: "bold", color: "orange", letterSpacing: "2px"}}>Click here to see more</p>
+                    </Link>
+                </div>
+                
             </div>
-            {props.post.comments.map(comment => <Comment comment={comment}/>)}
-            <form onSubmit={(e) => handleAddComment(e, props.post.id)} style={{
-                widht: "100%",
-                display: "flex",
-                justifyContent: "space-around",
-                border: "solid black 1px"
-            }}>
-                <label>Add comment </label>
-                <input type="text" style={{width: "50%"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
-                <button type="submit" style={{justifySelf:"flex-end"}}>Send</button>
-            </form>
+            {props.post.author === props.auth.user ? <button style={{position: "absolute"}} onClick={()=>{handleDeletePost(props.post.id)}}>❌</button> : null}
         </div>
     )
 }
@@ -114,11 +134,10 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
-        likePost: (id) => dispatch(operations.likePost(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default connect(mapStateToProps, mapDispatchToProps)(PostPreview);
 
 // {
 //     author: "",

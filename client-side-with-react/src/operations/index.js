@@ -101,6 +101,23 @@ const sortByDislikes = (type) => async (dispatch, state) => {
     dispatch(sortByDISLIKES(year_state))
 }
 
+const likePost = (id) => async (dispatch) => {
+    axios.post("http://localhost:8080/like_post", {
+        // year: props.year.name,
+        // month: props.year.month_to_display.name,
+        // day: props.day,
+        id: id
+    })
+    .then(result => {
+        console.log("updated posts: "+result)
+        // if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+        //     setYear(props.year.name, props.year.month_to_display.name)
+        // } else {
+        //     console.log("error")
+        // }
+    })
+    .catch(err=>console.log(err))
+}
 const operations = {
     getYearAndMonth,
     changeMonth,
@@ -108,7 +125,8 @@ const operations = {
     logout,
     filterByAuthor,
     sortByLikes,
-    sortByDislikes
+    sortByDislikes,
+    likePost
 }
   
 export default operations

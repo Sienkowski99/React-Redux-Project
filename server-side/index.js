@@ -20,7 +20,8 @@ mongoose
 
 const cors = require('cors');
 const Year = require('./models/Year');
-const { response, query } = require('express');
+const Post = require('./models/Post')
+
 app.use(cors())
 
 const months = [
@@ -39,14 +40,13 @@ const months = [
 ];
 
 app.get('/', (req, res) => {
-  User.find().then(result => console.log(result))
   res.send('Backed of Friends Schedule!')
 })
 
-app.post('/upload_avatar', upload.single('avatar'), (req, res) => {
-  console.log("Someone wants to upload an avatar")
-  console.log(req.body)
-})
+// app.post('/upload_avatar', upload.single('avatar'), (req, res) => {
+//   console.log("Someone wants to upload an avatar")
+//   console.log(req.body)
+// })
 
 app.post('/get_year', (req, res) => {
   let response_object = {
@@ -54,7 +54,9 @@ app.post('/get_year', (req, res) => {
     content: null,
     statusCode: null
   }
-
+  Post.find().then(result => {
+    console.log(result)
+  }).catch(err => console.log(err))
   console.log(req.body)
   Year.find({year: req.body.year}).then(result => {
     console.log(result);
@@ -75,6 +77,25 @@ app.post('/get_year', (req, res) => {
   })
 })
 
+app.post('/get_year_posts', (req, res) => {
+  console.log(req.body)
+  Post.find().then(result => {
+    const to_send = result.filter(post => post.id.getFullYear() === req.body.year)
+    res.send(to_send)
+  }).catch(err=>{
+    console.log(err);
+    res.send(err)
+  })
+})
+
+app.post('/remove_post', (req, res) => {
+  console.log(req.body.post_id)
+  Post.findByIdAndDelete({id: req.body.post_id}).then(result => {
+    console.log(result);
+  }).catch(err=>{console.log(err);})
+  res.send("gituwa")
+})
+
 app.post('/like_post', (req, res) => {
   let response_object = {
     msg: null,
@@ -82,6 +103,9 @@ app.post('/like_post', (req, res) => {
     statusCode: null
   }
   console.log(req.body)
+  Post.findOneAndUpdate({id: req.body.id}, {$inc: {"likes": 1}}).then(result=>{
+    console.log(result)
+  }).catch(err=>console.log(err))
   const query = `months.${months.indexOf(req.body.month)}.days.${req.body.day-1}.availablePeople.$[post].likes`
   Year.findOneAndUpdate({year: req.body.year}, {$inc: {[query]: 1}}, {"arrayFilters": [{ "post.id": req.body.post_id }]})
   .then(result => {
@@ -184,6 +208,7 @@ app.post('/add_term', (req, res) => {
   console.log("add ing new term to the database")
   console.log(req.body)
   const req_date = new Date(req.body.date)
+  const u = uuidv4()
   const post = {
         date: req_date,
         author: req.body.user,
@@ -191,8 +216,18 @@ app.post('/add_term', (req, res) => {
         likes: 0,
         dislikes: 0,
         comments: [],
-        id: uuidv4()
+        id: u
   }
+  const newPost = new Post({
+    date: req_date,
+    author: req.body.user,
+    content: req.body.text,
+    likes: 0,
+    dislikes: 0,
+    comments: [],
+    id: u
+  })
+  newPost.save()
   const query = `months.${req_date.getMonth()}.days.${req_date.getDate()-1}.availablePeople`
   Year.findOneAndUpdate({year: req_date.getFullYear()}, {$push: {[query]: post}}, {new: true})
   .then(result => {
