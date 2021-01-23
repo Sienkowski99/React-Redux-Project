@@ -73,7 +73,7 @@ const SacrificeForm = (props) => {
                     // }
                     return errors;
                 }}
-                onSubmit= {(values, actions) => {
+                onSubmit= {async (values, actions) => {
                     console.log(values)
                     // const bezZmienianego = data.filter(x=>x.id!==szczegoloweID)
                     // const values2 = {...values,id: szczegoloweID}
@@ -81,12 +81,15 @@ const SacrificeForm = (props) => {
                     // setczyedit("nie")
                     const obj = {...values, user: props.user}
                     console.log(obj)
-                    axios.post("http://localhost:8080/add_term", obj).then(result => {
-                        console.log(result.data); 
-                        props.setYear(props.year.name, props.year.month_to_display.name)
-                        actions.resetForm()
-                        // this.reset()
-                    }).catch(err => alert(err))
+                    props.addPost(obj)
+                    // await axios.post("http://localhost:8080/add_post", obj)
+                    // .then(result => {
+                    //     console.log(result.data); 
+                    //     // props.setYear(props.year.name, props.year.month_to_display.name)
+                    //     actions.resetForm()
+                    //     // this.reset()
+                    // }).catch(err => alert(err))
+                    actions.resetForm()
                 }}
             >
                 {({
@@ -235,6 +238,7 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
+        addPost: (data_obj) => dispatch(operations.addPost(data_obj))
     }
 }
 

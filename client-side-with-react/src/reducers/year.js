@@ -40,6 +40,8 @@ const yearReducer = (state = initial_state, action) => {
     }
     console.log(action.type)
     switch(action.type) {
+        case "UPDATE_YEAR_POSTS":
+            return {...state, ...action.payload}
         case "SET_YEAR":
             console.log("CHANGING YEAR")
             console.log(action.payload)

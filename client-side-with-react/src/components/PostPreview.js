@@ -42,39 +42,17 @@ const PostPreview = (props) => {
     } 
 
     const handleLike = (id) => {
-        console.log("post id "+id)
-        axios.post("http://localhost:8080/like_post", {
-            year: props.year.name,
-            month: props.year.month_to_display.name,
-            day: props.day,
-            post_id: id
-        })
-        .then(result => {
-            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
-                props.setYear(props.year.name, props.year.month_to_display.name)
-            } else {
-                console.log("error")
-            }
-        })
-        .catch(err=>console.log(err))
+        props.likePost(id)
     }
 
-    const handleDisLike = (id) => {
-        console.log("post id "+id)
-        axios.post("http://localhost:8080/dislike_post", {
-            year: props.year.name,
-            month: props.year.month_to_display.name,
-            day: props.day,
-            post_id: id
-        })
-        .then(result => {
-            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
-                props.setYear(props.year.name, props.year.month_to_display.name)
-            } else {
-                console.log("error")
-            }
-        })
-        .catch(err=>console.log(err))
+    const handleDisLike = (id) => { 
+        props.dislikePost(id)
+    }
+
+    const handleRemovePost = (id) => {
+        if (window.confirm("Are you sure you want to remove this post?")) {
+            props.removePost(id)
+        }
     }
 
     const like_dislike_btn_style = {
@@ -86,15 +64,13 @@ const PostPreview = (props) => {
         }
     }
 
-    const handleDeletePost = (post_id) => {
-        console.log("Removing post with id: "+post_id)
-    }
-
     return (
-        <div style={comment_div_style} onClick={()=>{
-            console.log("Post has been clicked");
-            console.log(props.post.id)
-        }}>
+        <div style={comment_div_style} 
+        // onClick={()=>{
+        //     console.log("Post has been clicked");
+        //     console.log(props.post.id)
+        // }}
+        >
             <div style={{display: "flex", flexDirection: "row"}}>
                 <div style={{width: "20%", display: "flex", flexDirection: "column"}}>
                     <h2>{props.post.author} </h2>
@@ -119,7 +95,7 @@ const PostPreview = (props) => {
                 </div>
                 
             </div>
-            {props.post.author === props.auth.user ? <button style={{position: "absolute"}} onClick={()=>{handleDeletePost(props.post.id)}}>❌</button> : null}
+            {props.post.author === props.auth.user ? <button style={{position: "absolute"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</button> : null}
         </div>
     )
 }
@@ -134,6 +110,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
+        likePost: (id) => dispatch(operations.likePost(id)),
+        dislikePost: (id) => dispatch(operations.dislikePost(id)),
+        removePost: (id) => dispatch(operations.removePost(id))
     }
 }
 

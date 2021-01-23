@@ -7,7 +7,7 @@ const Day = (props) => {
     const [hide, setHide] = useState(null)
     useEffect(()=>{
         // console.log(props.data.availablePeople.length)
-        if (props.data.availablePeople.length > 2) {
+        if (props.data.posts.length > 2) {
             setHide(true)
         }
     }, [props])
@@ -21,10 +21,10 @@ const Day = (props) => {
         // }
         if (hide) {
             // return (props.data.availablePeople.slice(2).map(ppl => <PostPreview post={ppl} day={props.data.day}/>))
-            toDisplay = [props.data.availablePeople[0],props.data.availablePeople[1]]
+            toDisplay = [props.data.posts[0],props.data.posts[1]]
         } else {
             // return(props.data.availablePeople.map(ppl => <PostPreview post={ppl} day={props.data.day}/>))
-            toDisplay = props.data.availablePeople
+            toDisplay = props.data.posts
         }
         return(toDisplay.map(ppl => <PostPreview post={ppl} day={props.data.day}/>))
     }

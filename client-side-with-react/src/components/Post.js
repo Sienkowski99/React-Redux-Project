@@ -7,7 +7,7 @@ import { useState } from "react";
 const Post = (props) => {
 
     const [comment_content, setComment_content] = useState("")
-    // console.log("POST HERE"+JSON.stringify(props))
+
     const comment_div_style = {
         border: "solid black 2px",
         padding: "5px",
@@ -20,24 +20,22 @@ const Post = (props) => {
 
     const handleAddComment = (e, id) => {
         e.preventDefault()
-        console.log(e.target)
-        console.log("post id "+id)
-        axios.post("http://localhost:8080/comment_post", {
-            year: props.year.name,
-            month: props.year.month_to_display.name,
-            day: props.day,
-            post_id: id,
-            comment: comment_content,
-            author: props.auth.user
-        })
-        .then(result => {
-            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
-                props.setYear(props.year.name, props.year.month_to_display.name)
-            } else {
-                console.log("error")
-            }
-        })
-        .catch(err=>console.log(err))
+        // console.log(e.target)
+        // console.log("post id "+id)
+        props.addComment(id, comment_content, props.auth.user)
+        // axios.post("http://localhost:8080/comment_post", {
+        //     post_id: id,
+        //     comment: comment_content,
+        //     author: props.auth.user
+        // })
+        // .then(result => {
+        //     if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+        //         props.setYear(props.year.name, props.year.month_to_display.name)
+        //     } else {
+        //         console.log("error")
+        //     }
+        // })
+        // .catch(err=>console.log(err))
     } 
 
     const handleLike = (id) => {
@@ -47,20 +45,7 @@ const Post = (props) => {
 
     const handleDisLike = (id) => {
         // console.log("post id "+id)
-        axios.post("http://localhost:8080/dislike_post", {
-            year: props.year.name,
-            month: props.year.month_to_display.name,
-            day: props.day,
-            post_id: id
-        })
-        .then(result => {
-            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
-                props.setYear(props.year.name, props.year.month_to_display.name)
-            } else {
-                console.log("error")
-            }
-        })
-        .catch(err=>console.log(err))
+        props.dislikePost(id)
     }
 
     const like_dislike_btn_style = {
@@ -114,7 +99,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) => {
     return {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
-        likePost: (id) => dispatch(operations.likePost(id))
+        likePost: (id) => dispatch(operations.likePost(id)),
+        dislikePost: (id) => dispatch(operations.dislikePost(id)),
+        addComment: (id, content, author) => dispatch(operations.addComment(id, content, author))
     }
 }
 

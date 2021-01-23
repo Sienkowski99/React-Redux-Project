@@ -5,6 +5,7 @@ export const LOG_OUT = "LOG_OUT"
 export const FILTER_BY_AUTHOR = "FILTER_BY_AUTHOR"
 export const SORT_BY_LIKES = "SORT_BY_LIKES"
 export const SORT_BY_DISLIKES = "SORT_BY_DISLIKES"
+export const UPDATE_YEAR_POSTS = "UPDATE_YEAR_POSTS"
 
 export const setYearAndMonth = (yearAndMonth) => ({
     type: SET_YEAR,
@@ -38,4 +39,9 @@ export const sortByLIKES = (type) => ({
 export const sortByDISLIKES = (type) => ({
     type: SORT_BY_DISLIKES,
     payload: type
+})
+
+export const updateYearPosts = (posts) => ({
+    type: UPDATE_YEAR_POSTS,
+    payload: posts
 })
