@@ -97,7 +97,7 @@ const SacrificeForm = (props) => {
                                 onChange={handleChange}
                                 value={values.date}
                                 error={errors.date && Boolean(errors.date)}
-                                helperText={errors.date && errors.date}
+                                // helperText={errors.date && errors.date}
                             />
                             {errors &&
                                 errors.date &&
@@ -120,7 +120,7 @@ const SacrificeForm = (props) => {
                                 onChange={handleChange}
                                 value={values.message}
                                 error={errors.message && Boolean(errors.message)}
-                                helperText={errors.message && errors.message}
+                                // helperText={errors.message && errors.message}
                             />
                             {errors &&
                                 errors.message &&

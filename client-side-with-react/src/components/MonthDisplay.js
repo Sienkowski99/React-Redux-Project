@@ -46,7 +46,7 @@ const MonthDisplay = (props) => {
             // console.log(months[months.indexOf(props.year.month_to_display)-1])
             props.get_posts_from_year(props.year.name, months.indexOf(props.year.month_to_display.name)-1)
         }
-        console.log("prev")
+        // console.log("prev")
     } 
 
     return (
