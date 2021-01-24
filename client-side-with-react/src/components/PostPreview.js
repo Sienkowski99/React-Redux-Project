@@ -70,13 +70,13 @@ const PostPreview = (props) => {
         const date_obj = new Date(props.post.date)
         parseInt(date_obj.getDate()) < 10 ? date+="0"+date_obj.getDate() : date+=date_obj.getDate()
         // date+=date_obj.getDate()
-        console.log(date)
+        // console.log(date)
         date+="."
         parseInt(date_obj.getMonth()+1) < 10 ? date+=""+date_obj.getMonth()+1 : date+=date_obj.getMonth()+1
         // date+=date_obj.getMonth()+1
         date+="."
         date+=date_obj.getFullYear()
-        console.log(date)
+        // console.log(date)
         return date
     }
 
@@ -88,7 +88,7 @@ const PostPreview = (props) => {
         parseInt(mn) < 10 ? time+="0"+mn : time+=mn
         return time
     }   
-    console.log(props)
+    // console.log(props)
     return (
         <div 
         style={{width: "100%"}} 

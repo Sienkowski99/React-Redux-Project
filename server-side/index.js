@@ -223,6 +223,40 @@ app.post('/add_post', (req, res) => {
   })
 })
 
+app.post('/edit_post', (req, res) => {
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+  // const newPost = new Post({
+  //   date: req.body.date,
+  //   author: req.body.user,
+  //   content: req.body.message,
+  //   likes: 0,
+  //   dislikes: 0,
+  //   comments: req.body.comments,
+  //   id: uuidv4()
+  // })
+  Post.findOneAndUpdate({id: req.body.id}, {$set: { content: req.body.new_content}}, {new: true})
+  .then(result=>{
+
+    console.log(result)
+    response_object.msg = "OK"
+    response_object.statusCode = 200
+    res.send(response_object)
+
+  })
+  .catch(err=>{
+
+    console.log(err)
+    response_object.msg = "ERROR"
+    response_object.statusCode = 400
+    res.send(response_object)
+
+  })
+})
+
 app.post('/register', async (req, res) => {
   // console.log("body: "+req.body)
   const newUser = new User({

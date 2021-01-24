@@ -1,5 +1,5 @@
 const postsReducer = (state = {}, action) => {
-    console.log(action.type)
+    // console.log(action.type)
     switch(action.type) {
         case "UPDATE":
             return state

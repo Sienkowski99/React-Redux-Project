@@ -1,44 +1,25 @@
-import axios from 'axios'
-import { useState } from "react";
-// import {Formik} from 'formik'
 import operations from '../operations/index'
 import { connect } from "react-redux";
-import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
+import { Formik, Field, Form, FieldArray } from 'formik';
 import React from 'react';
-import ReactDOM from 'react-dom';
-// import {TextField, Button, MenuItem} from '@material-ui/core'
 import { Button, Card } from 'react-bootstrap';
 import * as Yup from 'yup';
 const {v4: uuidv4} = require('uuid')
 
 
 const SacrificeForm = (props) => {
-    console.log(props)
-    const [pickedDate, setPickedDate] = useState(new Date());
+    // console.log(props)
+    // const [pickedDate, setPickedDate] = useState(new Date());
     const error = {
         color: "#ff7575"
     }
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        event.target.reset();
-      }
+    // function handleSubmit(event) {
+    //     event.preventDefault();
+    //     event.target.reset();
+    //   }
     
-    const [msgToDate, setMsgToDate] = useState("");
+    // const [msgToDate, setMsgToDate] = useState("");
 
     const initialValues = {
         comments: [

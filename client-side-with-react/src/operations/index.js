@@ -1,6 +1,5 @@
 import axios from 'axios'
-import { set } from 'js-cookie';
-import {setYearAndMonth, setMonth, logIN, logOUT, filterByAUTHOR, sortByDISLIKES, sortByLIKES, updateYearPosts} from '../actions'
+import {setYearAndMonth, setMonth, logIN, logOUT} from '../actions'
 
 const monthsNames = [
     "January",
@@ -16,41 +15,6 @@ const monthsNames = [
     "November",
     "December",
 ];
-
-// const filter_and_sorter = (day_to_modify, activeFilters) => {
-//     // FILTERS
-//     const day = {...day_to_modify}
-//     if (activeFilters.filters.author) {
-//         day.availablePeople.filter(post => post.author.includes(activeFilters.filters.author) ? true : false)
-//     }
-//     //SORTERS
-//     if (activeFilters.sorters.likes !== null) {
-//         if (activeFilters.sorters.likes === "likes_inc") {
-//             console.log(day.availablePeople)
-//             day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
-//             console.log(day.availablePeople)
-//         }
-//         if (activeFilters.sorters.likes === "likes_dic") {
-//             console.log(day.availablePeople)
-//             day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
-//             console.log(day.availablePeople)
-//         }
-//     }
-//     if (activeFilters.sorters.dislikes !== null) {
-
-//         if (activeFilters.sorters.dislikes === "dislikes_inc") {
-//             console.log(day.availablePeople)
-//             day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
-//             console.log(day.availablePeople)
-//         }
-//         if (activeFilters.sorters.dislikes === "dislikes_dic") {
-//             console.log(day.availablePeople)
-//             day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
-//             console.log(day.availablePeople)
-//         }
-//     }
-//     return day
-// }
 
 const getYearAndMonth = (year, req_month) => async dispatch => {
     console.log(year + req_month)
@@ -89,62 +53,13 @@ const logout = () => async dispatch => {
     dispatch(logOUT())
 }
 
-const filter_and_sorter = (day_to_modify, activeFilters) => {
-    console.log("RECIEVED DAY "+JSON.stringify(day_to_modify.posts))
-    const day = {...day_to_modify}
-    if (activeFilters.filters.author) {
-        day.posts.filter(post => post.author.includes(activeFilters.filters.author) ? true : false)
-    }
-    //SORTERS
-    if (activeFilters.sorters.likes !== null) {
-        if (activeFilters.sorters.likes === "inc") {
-            day.posts.sort((postA, postB) => postB.likes - postA.likes)
-        }
-        if (activeFilters.sorters.likes === "dic") {
-            day.posts.sort((postA, postB) => postA.likes - postB.likes)
-        }
-        // activeFilters.sorters.likes === "inc" ? day.availablePeople.sort((postA, postB) => postA.likes - postB.likes) : null
-        // activeFilters.sorters.likes === "dic" ? day.availablePeople.sort((postA, postB) => postB.likes - postA.likes) : null
-    }
-    if (activeFilters.sorters.dislikes !== null) {
-        if (activeFilters.sorters.likes === "inc") {
-            day.posts.sort((postA, postB) => postB.likes - postA.likes)
-        }
-        if (activeFilters.sorters.likes === "dic") {
-            day.posts.sort((postA, postB) => postA.likes - postB.likes)
-        }
-    }
-    return day
-}
-
 const fi_and_so = (year_state) => {
-    // let day = {...day_to_change} 
-    // console.log(day)
-    // console.log(filters_and_sorters)
-    // if (filters_and_sorters.filters.author !== '') {
-    //     day.posts = day.posts.filter(post => post.author === filters_and_sorters.filters.author)
-    // }
+
     let x = {...year_state}
     
     x.month_to_display_and_apply_filters = {
         name: year_state.month_to_display.name,
         days: year_state.month_to_display.days.map(day=> {
-            // let fi_posts = []
-            // console.log(day)
-            // day.posts.forEach(post=>{
-            // //FILTERING
-            // console.log("WHDUIOHAIUWHDIOJAIWD")
-            // console.log(post.content.toLowerCase().includes(year_state.activeFilters.filters.content.toLowerCase()))
-            // if (
-            //     post.author.includes(year_state.activeFilters.filters.author) &&
-            //     post.content.toLowerCase().includes(year_state.activeFilters.filters.content.toLowerCase())
-            // ){fi_posts.push(post)}
-            //     //SORTING
-            //     console.log()
-        
-            // })
-            
-            // return {day: day.day, posts: fi_posts}
             let x = [...day.posts]
             x = x.filter(post => {
                         // let f = post.content.toLowerCase().includes(year_state.activeFilters.filters.content.toLowerCase())
@@ -155,42 +70,40 @@ const fi_and_so = (year_state) => {
                         post.content.toLowerCase().includes(year_state.activeFilters.filters.content.toLowerCase())
                         )
             })
-            // x = x.filter(post => {
-            //     return post.content.toLowerCase().includes(year_state.activeFilters.filters.content.toLowerCase())
-            // })
-            // if (!x.length) {
-            //     return {...day, posts: []}
-            // } else {
-            //     return {...day, posts: [...x]}
-            // }
+            if (year_state.activeFilters.sorters.likes) {
+                // console.log("SORTUJE PO LAJKACH")
+                if (year_state.activeFilters.sorters.typr === "ASC") {
+                    // console.log("SORTUJE MALEJACO")
+                    x = x.sort((postA, postB) => postB.likes - postA.likes)
+                }
+                if (year_state.activeFilters.sorters.typr === "DESC") {
+                    x = x.sort((postA, postB) => postA.likes - postB.likes)
+                }
+            }
+            if (year_state.activeFilters.sorters.dislikes) {
+                if (year_state.activeFilters.sorters.type === "ASC") {
+                    x = x.sort((postA, postB) => postB.dislikes - postA.dislikes)
+                }
+                if (year_state.activeFilters.sorters.type === "DESC") {
+                    x = x.sort((postA, postB) => postA.dislikes - postB.dislikes)
+                }
+            }
             return {...day, posts: [...x]}
             
         })
     }
-    console.log("diouajwidjawd")
-    console.log(x);
+    // console.log("diouajwidjawd")
+    // console.log(x);
     return x
 }
 
 const filterByContent = (content) => async (dispatch, state) => {
     const year_state = state().year
-    console.log(year_state)
+    // console.log(year_state)
     year_state.activeFilters.filters.content = content
 
-    // year_state.month_to_display_and_apply_filters = {
-    //     name: year_state.month_to_display.name,
-    //     days: year_state.month_to_display.days.map(async day=> await fi_and_so(day, year_state.activeFilters))
-    //     //     let fi_posts = []
-    //     //     console.log(day)
-    //     //     day.posts.forEach(post=>{if (post.author.includes(year_state.activeFilters.filters.author)){fi_posts.push(post)}})
-    //     //     return {day: day.day, posts: fi_posts}
-    //     // })
-    //     // days: year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
-    //     // days: year_state.month_to_display.days.map(day => {return {day: day.day, posts: day.posts.filter(post => year_state.activeFilters.filters.author ? post.author.includes(new_state.activeFilters.filters.author) : true)}})
-    //         // .sort((postA, postB) => new_state.activeFilters.sorters.byL postA.)}})
-    // }
     const year = await fi_and_so(year_state)
-    console.log(year)
+    // console.log(year)
     dispatch(setYearAndMonth({...year}))
 
 }
@@ -198,32 +111,67 @@ const filterByContent = (content) => async (dispatch, state) => {
 const filterByAuthor = (author) => async (dispatch, state) => {
     // dispatch(filterByAUTHOR(author))
     const year_state = state().year
-    console.log(year_state)
+    // console.log(year_state)
     year_state.activeFilters.filters.author = author
 
-    // year_state.month_to_display_and_apply_filters = {
-    //     name: year_state.month_to_display.name,
-    //     days: year_state.month_to_display.days.map(day=>{
-    //         let fi_posts = []
-    //         console.log(day)
-    //         day.posts.forEach(post=>{if (post.author.includes(year_state.activeFilters.filters.author)){fi_posts.push(post)}})
-    //         return {day: day.day, posts: fi_posts}
-    //     })
-    //     // days: year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
-    //     // days: year_state.month_to_display.days.map(day => {return {day: day.day, posts: day.posts.filter(post => year_state.activeFilters.filters.author ? post.author.includes(new_state.activeFilters.filters.author) : true)}})
-    //         // .sort((postA, postB) => new_state.activeFilters.sorters.byL postA.)}})
-    // }
     const year = await fi_and_so(year_state)
-    console.log(year)
+    // console.log(year)
     dispatch(setYearAndMonth({...year}))
 
 }
 
+const sortByLikes = () => async (dispatch, state) => {
+    const year_state = state().year
+    // console.log(year_state)
+    year_state.activeFilters.sorters.likes = true
+    year_state.activeFilters.sorters.dislikes = false
+
+    const year = await fi_and_so(year_state)
+    // console.log(year)
+    dispatch(setYearAndMonth({...year}))
+}
+
+const sortByDislikes = () => async (dispatch, state) => {
+    const year_state = state().year
+    // console.log(year_state)
+    year_state.activeFilters.sorters.dislikes = true
+    year_state.activeFilters.sorters.likes = false
+
+    const year = await fi_and_so(year_state)
+    // console.log(year)
+    dispatch(setYearAndMonth({...year}))
+}
+
+const sortByLikesNo = () => async (dispatch, state) => {
+    const year_state = state().year
+    // console.log(year_state)
+    year_state.activeFilters.sorters.dislikes = false
+    year_state.activeFilters.sorters.likes = false
+
+    const year = await fi_and_so(year_state)
+    // console.log(year)
+    dispatch(setYearAndMonth({...year}))
+}
+
+const sortByXType = (type) => async (dispatch, state) => {
+    const year_state = state().year
+    // console.log(year_state)
+    if (type === "none") {
+        year_state.activeFilters.sorters.type = null
+    } else {
+        year_state.activeFilters.sorters.type = type
+    }
+
+    const year = await fi_and_so(year_state)
+    // console.log(year)
+    dispatch(setYearAndMonth({...year}))
+}
+
 const fetch = async (year, month) =>{
-    console.log("pokaz mi: "+month)
+    // console.log("pokaz mi: "+month)
     const z = await axios.post("http://localhost:8080/get_posts_from_year", {year: year})
     .then(result=>{
-        console.log(result.data.content)
+        // console.log(result.data.content)
         const months = [
             {
                 name: "January",
@@ -659,7 +607,7 @@ const fetch = async (year, month) =>{
             const postDate = new Date(post.date)
             months[postDate.getMonth()].days[postDate.getDate()-1].posts.push(post)
         })
-        console.log(months)
+        // console.log(months)
 
         const obj = {
             name: year,
@@ -670,8 +618,8 @@ const fetch = async (year, month) =>{
         }
         // dispatch(updateYearPosts(obj))
         // dispatch(setYearAndMonth(obj))
-        console.log("OBIEKCIK");
-        console.log(obj)
+        // console.log("OBIEKCIK");
+        // console.log(obj)
         return obj
     })
     .catch(err=>{
@@ -682,10 +630,10 @@ const fetch = async (year, month) =>{
 }
 const get_posts_from_year = (year, month) => async (dispatch) => {
     // console.log(month)
-    console.log("FETCHING POSTS")
+    // console.log("FETCHING POSTS")
     const x = await fetch(year, month)
-    console.log("what is X")
-    console.log(x)
+    // console.log("what is X")
+    // console.log(x)
     if (x !== null) {
         dispatch(setYearAndMonth(x))
     } else {
@@ -693,32 +641,32 @@ const get_posts_from_year = (year, month) => async (dispatch) => {
     }
 }
 
-const sortByLikes = (type) => async (dispatch, state) => {
-    const year_state = state().year
-    if (type !== "none") {
-        year_state.activeFilters.sorters.likes = type
-    } else {
-        year_state.activeFilters.sorters.likes = null
-    }
-    year_state.month_to_display_and_apply_filters.days = year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
-    // console.log(year_state)
-    dispatch(sortByLIKES(year_state))
-}
-
-const sortByDislikes = (type) => async (dispatch, state) => {
-    const year_state = state().year
-    if (type !== "none") {
-        year_state.activeFilters.sorters.dislikes = type
-    } else {
-        year_state.activeFilters.sorters.dislikes = null
-    }
-    year_state.month_to_display_and_apply_filters.days = year_state.month_to_display.days.map(day => filter_and_sorter(day, year_state.activeFilters))
-    // console.log(year_state)
-    dispatch(sortByDISLIKES(year_state))
-}
-
 const likePost = (id) => async (dispatch, state) => {
     axios.post("http://localhost:8080/like_post", {id: id})
+    .then( async result => {
+        console.log(result)
+        if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+            const year_state = state().year
+            console.log(year_state)
+            console.log("FETCHING POSTS")
+            const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
+            if (x !== null) {
+                dispatch(setYearAndMonth(x))
+            } else {
+                alert("ERROR")
+            }
+        } else {
+            console.log("error")
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        alert("error")
+    })
+}
+
+const editPost = (id, new_content) => async (dispatch, state) => {
+    axios.post("http://localhost:8080/edit_post", {id: id, new_content: new_content})
     .then( async result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -855,7 +803,10 @@ const operations = {
     addComment,
     removePost,
     addPost,
-    filterByContent
+    filterByContent,
+    sortByXType,
+    sortByLikesNo,
+    editPost
 }
   
 export default operations

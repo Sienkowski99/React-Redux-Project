@@ -27,11 +27,24 @@ const PickFilters = (props) => {
 
     const handleSortByLikes = (type) => {
         console.log("Applying sorting :", type)
-        props.sortByLikes(type)
+        if (type === "likes") {
+            props.sortByLikes()
+        } else if (type === "dislikes") {
+            props.sortByDislikes()
+        } else {
+            props.sortByLikesNo()
+        }
+        
     }
-    const handleSortByDislikes = (type) => {
-        console.log("Applying sorting :", type)
-        props.sortByDislikes(type)
+    // const handleSortByDislikes = () => {
+    //     // console.log("Applying sorting :", type)
+    //     props.sortByDislikes()
+    // }
+
+    const handleSortByXType = (type) => {
+        // console.log("Applying sorting :", type)
+        console.log("USTAWIAM TYP SORTOWANIA NA: "+type)
+        props.sortByXType(type)
     }
 
     return(
@@ -49,17 +62,17 @@ const PickFilters = (props) => {
                     </div>
                     <Card.Header style={{marginBottom: "5px"}}>Sorters</Card.Header>
                     <div style={{display: "flex", flexDirection: "column"}}>
-                        <label>Sort by likes: </label>
+                        <label>Sort by: </label>
                         <select id="sortby" onChange={(e)=>handleSortByLikes(e.target.value)}>
                             <option value="none">None</option>
-                            <option value="likes_dic">Most Likes</option>
-                            <option value="likes_inc">Least Likes</option>
+                            <option value="dislikes">Likes</option>
+                            <option value="likes">Dislikes</option>
                         </select>
-                        <label>Sort by dislikes: </label>
-                        <select id="sortby" onChange={(e)=>handleSortByDislikes(e.target.value)}>
+                        <label>Sort type: </label>
+                        <select id="sortby" onChange={(e)=>handleSortByXType(e.target.value)}>
                             <option value="none">None</option>
-                            <option value="dislikes_dic">Most Dislikes</option>
-                            <option value="dislikes_inc">Least Dislikes</option>
+                            <option value="DESC">Descending</option>
+                            <option value="ASC">Ascending</option>
                         </select>
                     </div>
                 </Card.Body>
@@ -97,7 +110,9 @@ const mapDispatchToProps = (dispatch) => {
         filterByAuthor: (author) => dispatch(operations.filterByAuthor(author)),
         sortByLikes: (type) => dispatch(operations.sortByLikes(type)),
         sortByDislikes: (type) => dispatch(operations.sortByDislikes(type)),
-        filterByContent: (content) => dispatch(operations.filterByContent(content))
+        filterByContent: (content) => dispatch(operations.filterByContent(content)),
+        sortByXType: (type) => dispatch(operations.sortByXType(type)),
+        sortByLikesNo: () => dispatch(operations.sortByLikesNo())
     }
 }
 

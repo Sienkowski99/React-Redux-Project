@@ -1,12 +1,10 @@
 import { useParams } from "react-router-dom";
 import Post from "./Post"
 import auth from '../components/auth'
-// import Button from '@material-ui/core/Button';
-import {Link} from 'react-router-dom'
 import operations from '../operations/index'
 import { connect } from "react-redux";
 import { useEffect } from 'react';
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
 const ViewPost = (props) => {

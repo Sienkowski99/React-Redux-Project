@@ -1,20 +1,15 @@
-// import {connect} from "react-redux"
-// import { Redirect } from "react-router-dom"
 import auth from '../components/auth'
-// import Button from '@material-ui/core/Button';
-import { Link } from "react-router-dom";
 import SacrificeForm from './SacrificeForm'
-import axios from 'axios';
 import { useEffect } from 'react';
 import MonthDisplay from './MonthDisplay'
 import operations from '../operations/index'
 import { connect } from "react-redux";
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
 
 function Dashboard(props) {
-    console.log(props.year)
+    // console.log(props.year)
     const months = [
         "January",
         "February",

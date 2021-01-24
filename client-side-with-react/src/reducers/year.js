@@ -6,23 +6,24 @@ const initial_state = {
         },
         sorters: {
             likes: null,
-            dislikes: null
+            dislikes: null,
+            type: null
         }
     }
 }
 
 const yearReducer = (state = initial_state, action) => {
-    console.log(action.type)
+    // console.log(action.type)
     switch(action.type) {
         case "UPDATE_YEAR_POSTS":
             return {...state, ...action.payload}
         case "SET_YEAR":
-            console.log("CHANGING YEAR")
-            console.log(action.payload)
+            // console.log("CHANGING YEAR")
+            // console.log(action.payload)
             return {...state, ...action.payload}
         case "SET_MONTH":
-            console.log("CHANGING MONTH")
-            console.log(action.payload)
+            // console.log("CHANGING MONTH")
+            // console.log(action.payload)
             const req_month = state.months.filter(month => month.name === action.payload)[0]
             const req_month_with_filters = req_month
             const req_month_sorted = req_month_with_filters
