@@ -1,7 +1,7 @@
 // import {connect} from "react-redux"
 // import { Redirect } from "react-router-dom"
 import auth from '../components/auth'
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
 import SacrificeForm from './SacrificeForm'
 import axios from 'axios';
@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import MonthDisplay from './MonthDisplay'
 import operations from '../operations/index'
 import { connect } from "react-redux";
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
 
 function Dashboard(props) {
@@ -36,14 +38,25 @@ function Dashboard(props) {
     
     return (
         <div className="all">
-            <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+            <Navbar expand="lg" style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE"}}>
+            <LinkContainer to="/" style={{color: "#FFF1CE", fontSize: "25px"}}><Navbar.Brand style={{color: "#FFF1CE", fontSize: "25px"}}>Friends Schedule</Navbar.Brand></LinkContainer>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                <LinkContainer to="/dashboard"><Nav.Link>💻 Dashboard</Nav.Link></LinkContainer>
+                <LinkContainer to="/profile"><Nav.Link>👤 Profile</Nav.Link></LinkContainer>
+                </Nav>
+                <Button variant="danger" onClick={()=>{props.logout(); auth.logout(()=>props.history.push("/"))}}>Log out</Button>
+            </Navbar.Collapse>
+            </Navbar>
+            {/* <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Link to="/profile"><h1>Profile</h1></Link>
                 <h1 style={{margin: "0", fontSize: "50px", color: "#FFF1CE"}}>Friends Schedule</h1>
                 <Button variant="contained" color="primary" onClick={()=>{props.logout(); auth.logout(()=>props.history.push("/"))}}>Log out</Button>
-            </nav>
+            </nav> */}
             <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-                <h1>Dashboard</h1>  
-                <br/>
+                {/* <h1>Dashboard</h1>   */}
+                {/* <br/> */}
                 <SacrificeForm user={props.auth.user}/>
                 {/* <button onClick={()=>{props.nextMonth()}}>SNO</button> */}
                 {props.year.month_to_display ? <MonthDisplay/> : null}

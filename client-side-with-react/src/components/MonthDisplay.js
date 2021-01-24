@@ -25,11 +25,11 @@ const MonthDisplay = (props) => {
         // console.log(months.indexOf(props.month.name))
         if (months.indexOf(props.year.month_to_display.name)+1>11){
             // props.nextYear()
-            console.log("next_year")
-            props.setYear(props.year.name+1, months[0])
+            // console.log("next_year")
+            props.get_posts_from_year(props.year.name+1, 0)
         } else {
-            console.log("next_month")
-            props.setMonth(props.year, months[months.indexOf(props.year.month_to_display.name)+1])
+            // console.log("next_month")
+            props.get_posts_from_year(props.year.name, months.indexOf(props.year.month_to_display.name)+1)
         }
     } 
 
@@ -38,13 +38,13 @@ const MonthDisplay = (props) => {
         // console.log(months.indexOf(props.month.name))
         if (months.indexOf(props.year.month_to_display.name)-1<0){
             // props.prevYear()
-            console.log("prev_year")
-            props.setYear(props.year.name-1, months[11])
+            // console.log("prev_year")
+            props.get_posts_from_year(props.year.name-1, 11)
         } else {
-            console.log("prev_month")
-            console.log(months.indexOf(props.year.month_to_display))
-            console.log(months[months.indexOf(props.year.month_to_display)-1])
-            props.setMonth(props.year, months[months.indexOf(props.year.month_to_display.name)-1])
+            // console.log("prev_month")
+            // console.log(months.indexOf(props.year.month_to_display))
+            // console.log(months[months.indexOf(props.year.month_to_display)-1])
+            props.get_posts_from_year(props.year.name, months.indexOf(props.year.month_to_display.name)-1)
         }
         console.log("prev")
     } 
@@ -57,9 +57,9 @@ const MonthDisplay = (props) => {
                 flexDirection: "column",
                 justifyContent: "space-around",
                 alignItems: "center",
-                width: "40%",
-                borderLeft: "solid white 2px",
-                borderRight: "solid white 2px",
+                width: "80%",
+                // borderLeft: "solid white 2px",
+                // borderRight: "solid white 2px",
                 padding: "0 40px",
             }}
             >
@@ -90,7 +90,7 @@ const MonthDisplay = (props) => {
                     >
                     🢀 Previous
                     </button>
-                    <h2>{props.year.month_to_display.name} of {props.year.name}</h2>
+                    <h2>{props.year.month_to_display_and_apply_filters.name} of {props.year.name}</h2>
                     <button
                     style={{
                         backgroundColor: "#e7e7e7",
@@ -131,6 +131,7 @@ const mapDispatchToProps = (dispatch) => {
         // nextYear: () => dispatch(({type: "NEXT_YEAR"})),
         // prevYear: () => dispatch(({type: "PREV_YEAR"})),
         // swapYear: (year, month) => dispatch(({type: "SWAP", payload: {year: year, month_to_display: month}}))
+        get_posts_from_year: (year, month) => dispatch(operations.get_posts_from_year(year, month))
     }
 }
 

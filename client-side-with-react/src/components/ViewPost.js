@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import Post from "./Post"
 import auth from '../components/auth'
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import {Link} from 'react-router-dom'
 import operations from '../operations/index'
 import { connect } from "react-redux";
 import { useEffect } from 'react';
+import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import {LinkContainer} from 'react-router-bootstrap'
 
 const ViewPost = (props) => {
     useEffect(()=>{
@@ -20,11 +22,22 @@ const ViewPost = (props) => {
     // console.log(post)
     return (
         <div>
-            <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+            <Navbar expand="lg" style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE"}}>
+            <LinkContainer to="/" style={{color: "#FFF1CE", fontSize: "25px"}}><Navbar.Brand style={{color: "#FFF1CE", fontSize: "25px"}}>Friends Schedule</Navbar.Brand></LinkContainer>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="mr-auto">
+                <LinkContainer to="/dashboard"><Nav.Link>💻 Dashboard</Nav.Link></LinkContainer>
+                <LinkContainer to="/profile"><Nav.Link>👤 Profile</Nav.Link></LinkContainer>
+                </Nav>
+                <Button variant="danger" onClick={()=>{props.logout(); auth.logout(()=>props.history.push("/"))}}>Log out</Button>
+            </Navbar.Collapse>
+            </Navbar>
+            {/* <nav style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE", padding: "10px", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <Link to="/dashboard"><h1>Dashboard</h1></Link>
                 <h1 style={{margin: "0", fontSize: "50px", color: "#FFF1CE"}}>Friends Schedule</h1>
                 <Button variant="contained" color="primary" onClick={()=>{auth.logout(()=>props.history.push("/"))}}>Log out</Button>
-            </nav>
+            </nav> */}
             <div>   
                 {props.year.posts && props.year.posts.filter(post=>post.id === params.postId).length ? <Post post={props.year.posts.filter(post=>post.id === params.postId)[0]}/> : <p>NOT FOUND</p>}
             </div>

@@ -223,7 +223,7 @@ app.post('/add_post', (req, res) => {
   })
 })
 
-app.post('/register', (req, res) => {
+app.post('/register', async (req, res) => {
   // console.log("body: "+req.body)
   const newUser = new User({
     login: req.body.login,
@@ -238,22 +238,31 @@ app.post('/register', (req, res) => {
     msg: null,
     statusCode: null
   }
-
-  newUser.save().
-  then(result => {
-
-    console.log(result)
-    response_object.msg = "Now you have to log in"
-    response_object.statusCode = 200
+  const check = []
+  await User.find({login: req.body.login}).then(x=>{if (result.length) {check.push(x)}}).catch(err=>console.log(err))
+  await User.find({email: req.body.email}).then(x=>{if (result.length) {check.push(x)}}).catch(err=>console.log(err))
+  console.log(check)
+  if (check.length > 0) {
+    response_object.msg = "Login or email already in use!"
+    response_object.statusCode = 400
     return res.send(response_object)
+  } else {
+    newUser.save().
+    then(result => {
 
-  })
-  .catch(err=>{
+      console.log(result)
+      response_object.msg = "Now you have to log in"
+      response_object.statusCode = 200
+      return res.send(response_object)
 
-    console.log(err)
-    res.send(err)
+    })
+    .catch(err=>{
 
-  })
+      console.log(err)
+      res.send(err)
+
+    })
+  }
 })
 
 app.post('/login', (req, res) => {

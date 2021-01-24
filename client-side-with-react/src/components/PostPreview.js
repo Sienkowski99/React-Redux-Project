@@ -4,6 +4,7 @@ import operations from '../operations/index'
 import { connect } from "react-redux";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button, Card } from 'react-bootstrap';
 
 const PostPreview = (props) => {
 
@@ -64,14 +65,80 @@ const PostPreview = (props) => {
         }
     }
 
+    const returnProperDate = () => {
+        let date = ""
+        const date_obj = new Date(props.post.date)
+        parseInt(date_obj.getDate()) < 10 ? date+="0"+date_obj.getDate() : date+=date_obj.getDate()
+        // date+=date_obj.getDate()
+        console.log(date)
+        date+="."
+        parseInt(date_obj.getMonth()+1) < 10 ? date+=""+date_obj.getMonth()+1 : date+=date_obj.getMonth()+1
+        // date+=date_obj.getMonth()+1
+        date+="."
+        date+=date_obj.getFullYear()
+        console.log(date)
+        return date
+    }
+
+    const returnProperTime = (hr, mn) => {    
+        // console.log(hr, mn)
+        let time = ""
+        parseInt(hr) < 10 ? time+="0"+hr : time+=hr
+        time+=":"
+        parseInt(mn) < 10 ? time+="0"+mn : time+=mn
+        return time
+    }   
+    console.log(props)
     return (
-        <div style={comment_div_style} 
+        <div 
+        style={{width: "100%"}} 
         // onClick={()=>{
         //     console.log("Post has been clicked");
         //     console.log(props.post.id)
         // }}
-        >
-            <div style={{display: "flex", flexDirection: "row"}}>
+        >   
+            <Card  bg="dark" text="white" style={{marginBottom: "10px"}}>
+                <Card.Header style={{display: "flex"}}>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%"}}>
+                        <p style={{margin: "0"}}>{props.post.author}</p>
+                        <p style={{margin: "0"}}>{returnProperDate()}</p>
+                        <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null}</p>
+                        
+                    </div>
+                    
+                </Card.Header>
+                {/* <div style={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between", alignItems: "center"}}>
+                    <Card.Header>{props.post.author}</Card.Header>
+                    <Card.Header>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</Card.Header>
+                </div> */}
+                <Card.Body>
+                    {/* <Card.Title>{props.post.content}</Card.Title> */}
+                    {/* <Card.Text>
+                    {props.post.content}
+                    </Card.Text> */}
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "20%"}}>
+                            <h3 style={{margin: "0"}}>{returnProperTime(new Date(props.post.date).getHours(), new Date(props.post.date).getMinutes())}</h3>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center"}}>
+                                <p style={{margin: "0"}}>{props.post.likes}</p>
+                                <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
+                                <p style={{margin: "0"}}>{props.post.dislikes}</p>
+                                <button style={like_dislike_btn_style} onClick={()=>handleDisLike(props.post.id)}>👎</button>
+                            </div>
+                        </div>
+                        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "80%"}}>
+                            <Card.Title>{props.post.content}</Card.Title>
+                            <Link to={{pathname: `posts/${props.post.id}`, post:{...props.post}}} style={{ textDecoration: 'none', color: "white" }}>
+                                {/* <p style={{fontWeight: "bold", color: "orange", letterSpacing: "2px"}}>Click here to see more</p> */}
+                                <Button variant="info" size="sm">Click here to read more</Button>
+                            </Link>
+                        </div>  
+                    </div>
+                    
+                    
+                </Card.Body>
+            </Card>
+            {/* <div style={{display: "flex", flexDirection: "row"}}>
                 <div style={{width: "20%", display: "flex", flexDirection: "column"}}>
                     <h2>{props.post.author} </h2>
                     <h2>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</h2>
@@ -82,9 +149,9 @@ const PostPreview = (props) => {
             </div>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <div style={{display: "flex", flexDirection: "row", width:"20%", justifyContent: "center"}}>
-                    <p>{props.post.likes}</p>
+                    <p style={{margin: "0"}}>{props.post.likes}</p>
                     <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
-                    <p>{props.post.dislikes}</p>
+                    <p style={{margin: "0"}}>{props.post.dislikes}</p>
                     <button style={like_dislike_btn_style} onClick={()=>handleDisLike(props.post.id)}>👎</button>
                 </div>
                 
@@ -94,8 +161,8 @@ const PostPreview = (props) => {
                     </Link>
                 </div>
                 
-            </div>
-            {props.post.author === props.auth.user ? <button style={{position: "absolute"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</button> : null}
+            </div> */}
+            {/* {props.post.author === props.auth.user ? <Button style={{position: "absolute", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null} */}
         </div>
     )
 }

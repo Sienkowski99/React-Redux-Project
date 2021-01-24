@@ -10,6 +10,7 @@ import {useEffect} from 'react'
 // import {Link, Router} from 'react-router-dom'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import operations from './operations/index'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import Home from './components/Home'

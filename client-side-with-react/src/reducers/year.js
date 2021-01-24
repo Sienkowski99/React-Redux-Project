@@ -1,7 +1,8 @@
 const initial_state = {
     activeFilters: {
         filters: {
-            author: ""
+            author: "",
+            content: ""
         },
         sorters: {
             likes: null,
@@ -11,33 +12,6 @@ const initial_state = {
 }
 
 const yearReducer = (state = initial_state, action) => {
-    const filter_and_sorter = (day_to_modify, activeFilters) => {
-        console.log("RECIEVED DAY "+JSON.stringify(day_to_modify.availablePeople))
-        const day = {...day_to_modify}
-        if (activeFilters.filters.author) {
-            day.availablePeople.filter(post => post.author.includes(activeFilters.filters.author) ? true : false)
-        }
-        //SORTERS
-        if (activeFilters.sorters.likes !== null) {
-            if (activeFilters.sorters.likes === "inc") {
-                day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
-            }
-            if (activeFilters.sorters.likes === "dic") {
-                day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
-            }
-            // activeFilters.sorters.likes === "inc" ? day.availablePeople.sort((postA, postB) => postA.likes - postB.likes) : null
-            // activeFilters.sorters.likes === "dic" ? day.availablePeople.sort((postA, postB) => postB.likes - postA.likes) : null
-        }
-        if (activeFilters.sorters.dislikes !== null) {
-            if (activeFilters.sorters.likes === "inc") {
-                day.availablePeople.sort((postA, postB) => postB.likes - postA.likes)
-            }
-            if (activeFilters.sorters.likes === "dic") {
-                day.availablePeople.sort((postA, postB) => postA.likes - postB.likes)
-            }
-        }
-        return day
-    }
     console.log(action.type)
     switch(action.type) {
         case "UPDATE_YEAR_POSTS":
