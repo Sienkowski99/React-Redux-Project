@@ -69,7 +69,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        get_posts_from_year: (year, month) => dispatch(operations.get_posts_from_year(year, month))
+        get_posts_from_year: (year, month) => dispatch(operations.get_posts_from_year(year, month)),
+        logout: () => dispatch(operations.logout()),
     }
 }
 

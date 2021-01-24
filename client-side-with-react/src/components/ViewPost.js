@@ -60,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
         likePost: (id) => dispatch(operations.likePost(id)),
         dislikePost: (id) => dispatch(operations.dislikePost(id)),
         addComment: (id, content, author) => dispatch(operations.addComment(id, content, author)),
-        get_posts_from_year: (year, month) => dispatch(operations.get_posts_from_year(year, month))
+        get_posts_from_year: (year, month) => dispatch(operations.get_posts_from_year(year, month)),
+        logout: () => dispatch(operations.logout()),
     }
 }
 
