@@ -6,9 +6,7 @@ const sha256 = require('js-sha256')
 app.use(express.json());
 
 const multer  = require('multer')
-const upload = multer({ 
-  dest: 'uploads/'
-})
+
 
 const User = require('./models/User');
 const mongoose = require('mongoose');
@@ -24,10 +22,6 @@ const cors = require('cors');
 const Year = require('./models/Year');
 const Post = require('./models/Post');
 const { replaceOne } = require('./models/User');
-
-// const mu = multer({
-//   dest: __dirname + '../public/uploads/',
-// })
 
 app.use(cors())
 
@@ -204,10 +198,10 @@ app.post('/add_post', (req, res) => {
   const newPost = new Post({
     date: req.body.date,
     author: req.body.user,
-    content: req.body.text,
+    content: req.body.message,
     likes: 0,
     dislikes: 0,
-    comments: [],
+    comments: req.body.comments,
     id: uuidv4()
   })
   newPost.save()
@@ -293,10 +287,42 @@ app.post('/login', (req, res) => {
   })
 })
 
-app.post("/upload_avatar", upload.single(uuidv4()), (req,res)=>{
-  console.log(req.files)
-  res.send("OK")
-})
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, 'assets/uploads')
+  },
+  filename: function (req, file, cb) {
+      // You could rename the file name
+      // cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+
+      // You could use the original name
+      cb(null, file.originalname)
+  }
+});
+
+
+// const upload = multer({ 
+//   dest: 'uploads/'
+// })
+
+var upload = multer({storage: storage})
+
+const router = express.Router();
+
+router.post("/upload_avatar", upload.single('photo'), (req, res, next) => {
+  return res.json({
+      image: req.file.path
+  });
+});
+// router.post("/upload_avatar", upload.single('photo'), (req,res)=>{
+//   console.log(req.file.path)
+//   return res.json({
+//     image: req.file.path
+//   });
+//   console.log(req.files)
+//   res.send("OK")
+// })
 
 app.listen(port, () => {
   console.log(`Backend listening at http://localhost:${port}`)
