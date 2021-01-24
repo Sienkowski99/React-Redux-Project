@@ -21,7 +21,7 @@ const ViewPost = (props) => {
     // const post = props.year.posts.filter(post=>post.id === params.postId)
     // console.log(post)
     return (
-        <div>
+        <div className="all">
             <Navbar expand="lg" style={{backgroundColor: "#FF9311", borderBottom: "solid 3px #FFF1CE"}}>
             <LinkContainer to="/" style={{color: "#FFF1CE", fontSize: "25px"}}><Navbar.Brand style={{color: "#FFF1CE", fontSize: "25px"}}>Friends Schedule</Navbar.Brand></LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -38,7 +38,11 @@ const ViewPost = (props) => {
                 <h1 style={{margin: "0", fontSize: "50px", color: "#FFF1CE"}}>Friends Schedule</h1>
                 <Button variant="contained" color="primary" onClick={()=>{auth.logout(()=>props.history.push("/"))}}>Log out</Button>
             </nav> */}
-            <div>   
+            {/* <div style={{margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", width: "70%"}}>
+                {props.year.posts && props.year.posts.filter(post=>post.author === props.auth.user).length ? props.year.posts.filter(post=>post.author === props.auth.user).map(post=><PostPreview post={post}/>) : <p>NOT FOUND</p>}
+            </div> */}
+            <h3 style={{margin: "10px 0"}}>Take a closer look at post {params.postId}</h3>
+            <div style={{margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", width: "70%"}}>   
                 {props.year.posts && props.year.posts.filter(post=>post.id === params.postId).length ? <Post post={props.year.posts.filter(post=>post.id === params.postId)[0]}/> : <p>NOT FOUND</p>}
             </div>
         </div>

@@ -3,10 +3,42 @@ import axios from 'axios'
 import operations from '../operations/index'
 import { connect } from "react-redux";
 import { useState } from "react";
+import { Button, Card } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 const Post = (props) => {
 
     const [comment_content, setComment_content] = useState("")
+
+    const handleRemovePost = (id) => {
+        if (window.confirm("Are you sure you want to remove this post?")) {
+            props.removePost(id)
+        }
+    }
+
+    const returnProperDate = () => {
+        let date = ""
+        const date_obj = new Date(props.post.date)
+        parseInt(date_obj.getDate()) < 10 ? date+="0"+date_obj.getDate() : date+=date_obj.getDate()
+        // date+=date_obj.getDate()
+        console.log(date)
+        date+="."
+        parseInt(date_obj.getMonth()+1) < 10 ? date+=""+date_obj.getMonth()+1 : date+=date_obj.getMonth()+1
+        // date+=date_obj.getMonth()+1
+        date+="."
+        date+=date_obj.getFullYear()
+        console.log(date)
+        return date
+    }
+
+    const returnProperTime = (hr, mn) => {    
+        // console.log(hr, mn)
+        let time = ""
+        parseInt(hr) < 10 ? time+="0"+hr : time+=hr
+        time+=":"
+        parseInt(mn) < 10 ? time+="0"+mn : time+=mn
+        return time
+    }  
 
     const comment_div_style = {
         border: "solid black 2px",
@@ -21,7 +53,7 @@ const Post = (props) => {
     const handleAddComment = (e, id) => {
         e.preventDefault()
         // console.log(e.target)
-        // console.log("post id "+id)
+        console.log("post id "+id)
         props.addComment(id, comment_content, props.auth.user)
         // axios.post("http://localhost:8080/comment_post", {
         //     post_id: id,
@@ -57,9 +89,72 @@ const Post = (props) => {
         }
     }
 
+    function resetForm() {
+        document.getElementById("myForm").reset();
+    }
+
     return (
-        <div style={comment_div_style}>
-            <div style={{display: "flex", flexDirection: "row"}}>
+        <div 
+            // style={comment_div_style}
+            style={{width: "100%", marginTop: "10px"}}
+        >   
+            <Card  bg="dark" text="white" style={{marginBottom: "10px"}}>
+                <Card.Header style={{display: "flex"}}>
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%"}}>
+                        <p style={{margin: "0"}}>{props.post.author}</p>
+                        <p style={{margin: "0"}}>{returnProperDate()}</p>
+                        <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null}</p>
+                        
+                    </div>
+                    
+                </Card.Header>
+                {/* <div style={{display: "flex", flexDirection: "row", width: "100%", justifyContent: "space-between", alignItems: "center"}}>
+                    <Card.Header>{props.post.author}</Card.Header>
+                    <Card.Header>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</Card.Header>
+                </div> */}
+                <Card.Body>
+                    {/* <Card.Title>{props.post.content}</Card.Title> */}
+                    {/* <Card.Text>
+                    {props.post.content}
+                    </Card.Text> */}
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "20%"}}>
+                            <h3 style={{margin: "0"}}>{returnProperTime(new Date(props.post.date).getHours(), new Date(props.post.date).getMinutes())}</h3>
+                            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center"}}>
+                                <p style={{margin: "0"}}>{props.post.likes}</p>
+                                <button style={like_dislike_btn_style} onClick={()=>handleLike(props.post.id)}>👍</button>
+                                <p style={{margin: "0"}}>{props.post.dislikes}</p>
+                                <button style={like_dislike_btn_style} onClick={()=>handleDisLike(props.post.id)}>👎</button>
+                            </div>
+                        </div>
+                        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "80%"}}>
+                            <Card.Title>{props.post.content}</Card.Title>
+                            <Link to={{pathname: `posts/${props.post.id}`, post:{...props.post}}} style={{ textDecoration: 'none', color: "white" }}>
+                                {/* <p style={{fontWeight: "bold", color: "orange", letterSpacing: "2px"}}>Click here to see more</p> */}
+                                {/* <Button variant="info" size="sm">Click here to read more</Button> */}
+                            </Link>
+                        </div>  
+                    </div>
+                    {props.post.comments.map(comment => <Comment comment={comment}/>)}
+                    <div>
+                        <form onSubmit={(e) => {handleAddComment(e, props.post.id); resetForm();}} id="myForm" style={{
+                            widht: "100%",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            // border: "solid black 1px",
+                            margin: "10px 0"
+                        }}>
+                            {/* <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "10%"}}>
+                                <Button variant="info">Text</Button>
+                            </div> */}
+                            <Button variant="info">Text</Button>
+                            <input type="text" style={{flexGrow: "1", backgroundColor: "#282C34", color: "white"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
+                            <Button type="submit" style={{justifySelf:"flex-end"}} variant="danger">Send 💬</Button>
+                        </form>
+                    </div>
+                </Card.Body>
+            </Card>
+            {/* <div style={{display: "flex", flexDirection: "row"}}>
                 <div style={{width: "20%", display: "flex", flexDirection: "column"}}>
                     <h2>{props.post.author} </h2>
                     <h2>{new Date(props.post.date).getHours()}:{new Date(props.post.date).getMinutes()}</h2>
@@ -84,7 +179,7 @@ const Post = (props) => {
                 <label>Add comment </label>
                 <input type="text" style={{width: "50%"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
                 <button type="submit" style={{justifySelf:"flex-end"}}>Send</button>
-            </form>
+            </form> */}
         </div>
     )
 }
@@ -101,7 +196,8 @@ const mapDispatchToProps = (dispatch) => {
         setYear: (year, month) => dispatch(operations.getYearAndMonth(year, month)),
         likePost: (id) => dispatch(operations.likePost(id)),
         dislikePost: (id) => dispatch(operations.dislikePost(id)),
-        addComment: (id, content, author) => dispatch(operations.addComment(id, content, author))
+        addComment: (id, content, author) => dispatch(operations.addComment(id, content, author)),
+        removePost: (id) => dispatch(operations.removePost(id))
     }
 }
 
