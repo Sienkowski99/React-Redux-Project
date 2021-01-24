@@ -33,31 +33,30 @@ const SacrificeForm = (props) => {
     const postSchema = Yup.object().shape({
         comments: Yup.array()
             .of(Yup.object().shape({
-                content: Yup.string().min(3, 'Write something more :)').max(30, 'Hola hola, stop it right there').required('Required')
+                content: Yup.string().min(3, 'Write something more :)')
+                .test('noswearing', 'Stop swearing!',
+                function(value) {
+                if (value) {
+                    return !value.includes('kurde');
+                }
+                else {
+                    return true;
+                }
+                })
+                .max(30, 'Hola hola, stop it right there')
+                .required('Required')
             })),
-            // .max(19, 'Too Long!')
-            // .required('Required')
-            // .test('checkIfCategoryExists', 'Category already exists',
-            //     function(value) {
-            //         return !myCategories.includes(value);
-            //     }),
-        message: Yup.string().min(3, 'Write something more :)').max(30, 'Hola hola, stop it right there').required('Required'),
-        // questions: Yup.array()
-        //     .of(Yup.object().shape({
-        //         question: Yup.string().min(5, 'Too short!').test('checkIfQuestionsHasQuestionMark', 'Question must end with a question mark!',
-        //             function(value) {
-        //             if (value) {
-        //                 return value.endsWith('?');
-        //             }
-        //             else {
-        //                 return true;
-        //             }
-        //             }),
-        //         type: Yup.string(),
-        //         difficulty: Yup.string(),
-        //         correct_answer: Yup.string(),
-        //         incorrect_answers: Yup.array()
-        //     }))
+        message: Yup.string().min(3, 'Write something more :)')
+        .test('noswearing', 'Stop swearing!',
+                function(value) {
+                if (value) {
+                    return !value.includes('kurde');
+                }
+                else {
+                    return true;
+                }
+                })
+        .max(30, 'Hola hola, stop it right there').required('Required'),
         date: Yup.date().required('Required')
     });
 
