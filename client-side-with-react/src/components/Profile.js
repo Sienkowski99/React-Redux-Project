@@ -1,12 +1,11 @@
 import auth from '../components/auth'
 // import Button from '@material-ui/core/Button';
-import {Link} from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 import { connect } from "react-redux";
 import PostPreview from './PostPreview'
 import operations from '../operations'
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 
 const Profile = (props) => {
