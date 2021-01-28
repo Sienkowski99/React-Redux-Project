@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {setYearAndMonth, setMonth, logIN, logOUT} from '../actions'
 
+const api_url = "http://10.45.3.171/api"
 const monthsNames = [
     "January",
     "February",
@@ -18,7 +19,7 @@ const monthsNames = [
 
 const getYearAndMonth = (year, req_month) => async dispatch => {
     console.log(year + req_month)
-    const year_obj = await axios.post("http://localhost:8080/get_year", {year: year})
+    const year_obj = await axios.post(`${api_url}/get_year`, {year: year})
     .then(result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -169,7 +170,7 @@ const sortByXType = (type) => async (dispatch, state) => {
 
 const fetch = async (year, month) =>{
     // console.log("pokaz mi: "+month)
-    const z = await axios.post("http://localhost:8080/get_posts_from_year", {year: year})
+    const z = await axios.post(`${api_url}/get_posts_from_year`, {year: year})
     .then(result=>{
         // console.log(result.data.content)
         const months = [
@@ -642,7 +643,7 @@ const get_posts_from_year = (year, month) => async (dispatch) => {
 }
 
 const likePost = (id) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/like_post", {id: id})
+    axios.post(`${api_url}/like_post`, {id: id})
     .then( async result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -666,7 +667,7 @@ const likePost = (id) => async (dispatch, state) => {
 }
 
 const editPost = (id, new_content) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/edit_post", {id: id, new_content: new_content})
+    axios.post(`${api_url}/edit_post`, {id: id, new_content: new_content})
     .then( async result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -690,7 +691,7 @@ const editPost = (id, new_content) => async (dispatch, state) => {
 }
 
 const dislikePost = (id) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/dislike_post", {id: id})
+    axios.post(`${api_url}/dislike_post`, {id: id})
     .then( async result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -714,7 +715,7 @@ const dislikePost = (id) => async (dispatch, state) => {
 }
 
 const addComment = (id, content, author) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/comment_post", {
+    axios.post(`${api_url}/comment_post`, {
         id: id,
         comment: content,
         author: author
@@ -742,7 +743,7 @@ const addComment = (id, content, author) => async (dispatch, state) => {
 }
 
 const addPost = (data_object) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/add_post", data_object)
+    axios.post(`${api_url}/add_post`, data_object)
     .then(async result => {
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
             const year_state = state().year
@@ -766,7 +767,7 @@ const addPost = (data_object) => async (dispatch, state) => {
 }
 
 const removePost = (id) => async (dispatch, state) => {
-    axios.post("http://localhost:8080/remove_post", {id: id,})
+    axios.post(`${api_url}/remove_post`, {id: id,})
     .then(async result => {
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
             const year_state = state().year

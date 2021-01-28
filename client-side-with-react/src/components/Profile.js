@@ -14,10 +14,10 @@ const Profile = (props) => {
         console.log("updating")
         const data = new FormData()
         // data.append("msg", "jaiowdja")
-        data.append("avatar", file)
-        axios.post('http://localhost:8080/upload_avatar', data, {headers: {
-            'Content-Type': "multipart/form-data"
-        }}).then(result => console.log(result)).catch(err => console.log(err))
+        // data.append("avatar", file)
+        // axios.post('http://localhost:8080/upload_avatar', data, {headers: {
+        //     'Content-Type': "multipart/form-data"
+        // }}).then(result => console.log(result)).catch(err => console.log(err))
     }
     const [file, setFile] = useState()
     useEffect(()=>{
