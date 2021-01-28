@@ -21,10 +21,11 @@ function Register(props) {
     const handleShow = () => {setSmShow(true)}
     const handleHide = () => {setSmShow(false)}
     const [registered, setRegistered] = useState(false)
+    const api_url = "http://10.45.3.171/api"
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)
-        axios.post('http://localhost:8080/register', {login: login, password: password, email: email})
+        axios.post(`${api_url}/register`, {login: login, password: password, email: email})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
                 setAlert(result.data.msg)

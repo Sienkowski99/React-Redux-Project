@@ -14,11 +14,11 @@ function Login(props) {
     const [password, setPassword] = useState("")
 
     // console.log(props.auth)
-
+    const api_url = "http://10.45.3.171/api"
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)
-        axios.post('http://localhost:8080/login', {login: login, password: password})
+        axios.post(`${api_url}/login`, {login: login, password: password})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
                 props.login(login)
