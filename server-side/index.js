@@ -273,8 +273,8 @@ app.post('/register', async (req, res) => {
     statusCode: null
   }
   const check = []
-  await User.find({login: req.body.login}).then(x=>{if (result.length) {check.push(x)}}).catch(err=>console.log(err))
-  await User.find({email: req.body.email}).then(x=>{if (result.length) {check.push(x)}}).catch(err=>console.log(err))
+  await User.find({login: req.body.login}).then(x=>{if (x.length) {check.push(x)}}).catch(err=>console.log(err))
+  await User.find({email: req.body.email}).then(x=>{if (x.length) {check.push(x)}}).catch(err=>console.log(err))
   console.log(check)
   if (check.length > 0) {
     response_object.msg = "Login or email already in use!"
@@ -305,7 +305,7 @@ app.post('/login', (req, res) => {
     msg: null,
     statusCode: null
   }
-
+  console.log(req.body)
   User.find({login: req.body.login})
   .then(result => {
     console.log(result);

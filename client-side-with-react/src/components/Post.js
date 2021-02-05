@@ -117,7 +117,7 @@ const Post = (props) => {
                             <p style={{margin: "0"}}>{returnProperDate()}</p>
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{setShow(true)}}>🖊️</Button> : null}</p>
-                                <p style={{margin: "0"}}> edit / remove </p>
+                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? "edit / remove" : null}  </p>
                                 <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null}</p>
                             </div>
                             

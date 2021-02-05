@@ -9,6 +9,7 @@ import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Card } from 'react
 import Modal from 'react-bootstrap/Modal'
 import {LinkContainer} from 'react-router-bootstrap'
 import { Link } from "react-router-dom";
+import { Formik } from 'formik';
 
 function Register(props) {
     // console.log(props.auth)
@@ -21,11 +22,32 @@ function Register(props) {
     const handleShow = () => {setSmShow(true)}
     const handleHide = () => {setSmShow(false)}
     const [registered, setRegistered] = useState(false)
-    const api_url = "http://10.45.3.171/api"
+    // const api_url = "http://10.45.3.171/api"
+    const api_url = "http://localhost:8080"
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)
         axios.post(`${api_url}/register`, {login: login, password: password, email: email})
+        .then(result => {
+            if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+                setAlert(result.data.msg)
+                setAlretTitle("💪 Nice!")
+                setSmShow(true)
+                // alert(result.data.msg)
+                // props.history.push("/login")
+            } else {
+                setAlert(result.data.msg)
+                setAlretTitle("👀 Ooopsie")
+                setSmShow(true)
+                // alert(result.data.msg)
+            }
+        })
+        .catch(err => console.log(err))
+    }
+    const handleSubmit2 = (values) => {
+        // e.preventDefault()
+        // console.log(login, password)
+        axios.post(`${api_url}/register`, {login: values.login, password: values.password, email: values.email})
         .then(result => {
             if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
                 setAlert(result.data.msg)
@@ -96,7 +118,7 @@ function Register(props) {
                         <Card.Header>Register</Card.Header>
                         <Card.Body>
                         <Card.Title>You have to register to be able to use Friends Schedule</Card.Title>
-                        <form onSubmit={(e) => handleSubmit(e)} style={{display: "flex", flexDirection: "column"}}>
+                        {/* <form onSubmit={(e) => handleSubmit(e)} style={{display: "flex", flexDirection: "column"}}>
                             <label>Login</label>
                             <input type="text" onChange={(e) => setLogin(e.target.value)}></input>
                             <label>Password</label>
@@ -108,7 +130,100 @@ function Register(props) {
                             <br/>
                             <p style={{fontSize: "12px"}}>Already have an account?</p>
                             <Link to="/login"><p style={{fontSize: "12px"}}>LOG IN</p></Link>
-                        </form>
+                        </form> */}
+                            <Formik
+                                initialValues={{
+                                        login: '',
+                                        password: '',
+                                        email: ''
+                                    }}
+                                validate={values => {
+                                    const errors = {};
+                                    if (!values.login) {
+                                        errors.login = 'Required!';
+                                    }
+                                    else if (!/^[A-Z]*$/.test(values.login)) {
+                                        errors.login = 'Niepoprawny format!';
+                                    }
+                                    if (!values.password) {
+                                        errors.password = 'Required!';
+                                    }
+                                    else if (!/^[A-Z]*$/.test(values.password)) {
+                                        errors.password = 'Niepoprawny format!';
+                                    }
+                                    if (!values.email) {
+                                        errors.email = 'Required!'
+                                    }
+                                    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                                        errors.email = 'Niepoprawny format!';
+                                    }
+                                    return errors;
+                                }}
+                                onSubmit= {(values,) => {
+                                    // console.log("LOL")
+                                    // // alert(JSON.parse(values))
+                                    // console.log(values)
+                                    // e.preventDefault()
+                                    // console.log(login, password)
+                                    // axios.post(`${api_url}/register`, {login: values.login, password: values.password, email: values.email})
+                                    // .then(result => {
+                                    //     if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+                                    //         setAlert(result.data.msg)
+                                    //         setAlretTitle("💪 Nice!")
+                                    //         setSmShow(true)
+                                    //         // alert(result.data.msg)
+                                    //         // props.history.push("/login")
+                                    //     } else {
+                                    //         setAlert(result.data.msg)
+                                    //         setAlretTitle("👀 Ooopsie")
+                                    //         setSmShow(true)
+                                    //         // alert(result.data.msg)
+                                    //     }
+                                    // })
+                                    // .catch(err => console.log(err))
+                                    handleSubmit2(values)
+                                }}
+                            >
+                                {({
+                                    values,
+                                    errors,
+                                    touched,
+                                    handleChange,
+                                    handleSubmit,
+                                }) => (
+                                <form onSubmit={handleSubmit} style={{display: "flex", flexDirection: "column"}}>
+                                    <label>Login</label>
+                                    <input
+                                        type="text"
+                                        name="login"
+                                        onChange={handleChange}
+                                        value={values.login}
+                                    />
+                                    {errors.login && touched.login && errors.login}
+                                    <label>Password</label>
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        onChange={handleChange}
+                                        value={values.password}
+                                    />
+                                    {errors.password && touched.password && errors.password}
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        onChange={handleChange}
+                                        value={values.email}
+                                    />
+                                    {errors.email && touched.email && errors.email}
+                                    <br/>
+                                    <Button variant="primary" color="primary" type="submit">Register</Button>
+                                    <br/>
+                                    <p style={{fontSize: "12px"}}>Already have an account?</p>
+                                    <Link to="/login"><p style={{fontSize: "12px"}}>LOG IN</p></Link>
+                                </form>
+                                )}
+                            </Formik>
                         </Card.Body>
                     </Card>
                 </div>

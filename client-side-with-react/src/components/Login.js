@@ -14,7 +14,8 @@ function Login(props) {
     const [password, setPassword] = useState("")
 
     // console.log(props.auth)
-    const api_url = "http://10.45.3.171/api"
+    // const api_url = "http://10.45.3.171/api"
+    const api_url = "http://localhost:8080"
     const handleSubmit = (e) => {
         e.preventDefault()
         // console.log(login, password)

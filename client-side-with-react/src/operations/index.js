@@ -1,7 +1,9 @@
 import axios from 'axios'
 import {setYearAndMonth, setMonth, logIN, logOUT} from '../actions'
 
-const api_url = "http://10.45.3.171/api"
+// const api_url = "http://10.45.3.171/api"
+
+const api_url = "http://localhost:8080"
 const monthsNames = [
     "January",
     "February",
