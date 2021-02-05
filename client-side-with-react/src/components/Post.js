@@ -52,9 +52,14 @@ const Post = (props) => {
 
     const handleAddComment = (e, id) => {
         e.preventDefault()
-        // console.log(e.target)
-        console.log("post id "+id)
-        props.addComment(id, comment_content, props.auth.user)
+        if (comment_content !== "") {
+            // console.log(e.target)
+            console.log("post id "+id)
+            props.addComment(id, comment_content, props.auth.user)
+        } else {
+            alert("Don't be so shy - write something!")
+        }
+        
     } 
 
     const handleLike = (id) => {
@@ -155,8 +160,8 @@ const Post = (props) => {
                                 {/* <div style={{display: "flex", flexDirection: "row", justifyContent: "center", width: "10%"}}>
                                     <Button variant="info">Text</Button>
                                 </div> */}
-                                <Button variant="info">Text</Button>
-                                <input type="text" style={{flexGrow: "1", backgroundColor: "#282C34", color: "white"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
+                                {/* <label variant="info">Text</label> */}
+                                <input placeholder="Write something..." type="text" style={{flexGrow: "1", backgroundColor: "#282C34", color: "white"}} onChange={(e)=>{setComment_content(e.target.value)}}/>
                                 <Button type="submit" style={{justifySelf:"flex-end"}} variant="danger">Send 💬</Button>
                             </form>
                         </div>

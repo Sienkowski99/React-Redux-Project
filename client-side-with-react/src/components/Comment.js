@@ -20,10 +20,14 @@ const Comment = (props) => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            borderRadius: "25px"
+            borderRadius: "25px",
+            padding: "5px 10px"
         }}>
-            <h3 style={{width: "20%"}}>{props.comment.author} : </h3>
-            <h4>{props.comment.content}</h4>
+            <div style={{display: "flex", justifyContent: "center", marginRight: "10px", color: "orange"}}>
+                <h3 style={{margin: "0", textShadow: "1px 1px black"}}>{props.comment.author}</h3>
+                <h3 style={{margin: "0"}}>: </h3>
+            </div>
+            <h4 style={{flexGrow: "1",margin: "0", width: "80%", wordBreak: "break-all"}}>{props.comment.content}</h4>
             {/* <div style={{display: "flex", flexDirection: "row"}}>
                 <p>{props.comment.likes}</p>
                 <button>👍</button>
