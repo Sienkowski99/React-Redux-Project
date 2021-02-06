@@ -14,8 +14,8 @@ const ViewPost = (props) => {
     },[])
     
     const params = useParams()
-    console.log(params.postId)
-    console.log(props.location.post)
+    // console.log(params.postId)
+    // console.log(props.location.post)
     // const post = props.year.posts.filter(post=>post.id === params.postId)
     // console.log(post)
     return (

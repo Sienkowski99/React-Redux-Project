@@ -72,7 +72,7 @@ const PostPreview = (props) => {
         // date+=date_obj.getDate()
         // console.log(date)
         date+="."
-        parseInt(date_obj.getMonth()+1) < 10 ? date+=""+date_obj.getMonth()+1 : date+=date_obj.getMonth()+1
+        parseInt(date_obj.getMonth()+1) < 10 ? date+="0"+(parseInt(date_obj.getMonth())+1) : date+=date_obj.getMonth()+1
         // date+=date_obj.getMonth()+1
         date+="."
         date+=date_obj.getFullYear()
@@ -100,7 +100,11 @@ const PostPreview = (props) => {
             <Card  bg="dark" text="white" style={{marginBottom: "10px"}}>
                 <Card.Header style={{display: "flex"}}>
                     <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%"}}>
-                        <p style={{margin: "0"}}>{props.post.author}</p>
+                        <div style={{display: "flex", justifyContent: "start", alignItems: "center"}}>
+                            <h4 style={{margin: "0"}}>{props.post.author}</h4>
+                            <div style={{width: "15px"}}></div>
+                            <p style={{margin: "0"}}>suggests:</p>
+                        </div>
                         <p style={{margin: "0"}}>{returnProperDate()}</p>
                         <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null}</p>
                         

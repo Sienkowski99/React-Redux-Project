@@ -22,7 +22,7 @@ const Comment = (props) => {
         marginTop: "10px"
     }
     const handleRemoveComment = (id) => {
-        if (window.confirm("Are you sure you want to remove this post?")) {
+        if (window.confirm("Are you sure you want to remove this comment?")) {
             props.removeComment(id)
         }
     }
@@ -56,14 +56,18 @@ const Comment = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <input onChange={(e)=>{setNew_data(e.target.value)}}/>
+                    <input style={{width: "100%"}} onChange={(e)=>{setNew_data(e.target.value)}}/>
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={()=>{handleClose()}}>Close</Button>
                     <Button variant="primary" onClick={()=>{
-                        handleClose()
-                        handleEditComment(props.comment.id, new_data)
+                        if (new_data === null || new_data === "") {
+                            alert("Don't leave it empty!")
+                        } else {
+                            handleClose()
+                            handleEditComment(props.comment.id, new_data)
+                        }
                     }}>Save changes</Button>
                 </Modal.Footer>
             </Modal>

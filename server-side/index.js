@@ -110,7 +110,8 @@ app.post('/remove_comment', (req, res) => {
     statusCode: null
   }
   // {id: req.body.id}
-  Post.update({}, { $pull: { comments: { id: req.body.id } } })
+  // console.log(req.body)
+  Post.updateMany({}, { $pull: { comments: { id: req.body.id } } })
   .then(result => {
     // const with_comment = result.filter(post=>post.)
     console.log(result)
@@ -165,7 +166,7 @@ app.post('/like_comment', (req, res) => {
     statusCode: null
   }
   // Post.update({'comments.id': req.body.id}, {$set: {'comments.$.content': req.body.new_content}}, {new: true})
-  Post.update({'comments.id': req.body.id}, {$inc: {'comments.$.likes': 1}})
+  Post.updateMany({'comments.id': req.body.id}, {$inc: {'comments.$.likes': 1}})
   .then(result=>{
 
     console.log(result)
@@ -219,7 +220,7 @@ app.post('/dislike_comment', (req, res) => {
     statusCode: null
   }
 
-  Post.update({'comments.id': req.body.id}, {$inc: {'comments.$.dislikes': 1}})
+  Post.updateMany({'comments.id': req.body.id}, {$inc: {'comments.$.dislikes': 1}})
   .then(result=>{
 
     console.log(result)

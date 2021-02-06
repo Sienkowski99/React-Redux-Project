@@ -4,6 +4,9 @@ import { Formik, Field, Form, FieldArray } from 'formik';
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import * as Yup from 'yup';
+import DatePicker from 'react-datepicker'
+import { useState } from 'react' 
+import "react-datepicker/dist/react-datepicker.css";
 const {v4: uuidv4} = require('uuid')
 
 
@@ -59,6 +62,26 @@ const SacrificeForm = (props) => {
         .max(30, 'Hola hola, stop it right there').required('Required'),
         date: Yup.date().required('Required')
     });
+    const [startDate, setStartDate] = useState(new Date());
+    const DatePickerField = ({ name, value, onChange }) => {
+        return (
+            <DatePicker
+                style={{autocomplete: "off"}}
+                name="date"
+                // value={values.date}
+                selected={(value && new Date(value)) || null}
+                // onChange={date => setStartDate(date)}
+                // onChange={setFieldValue}
+                showTimeSelect
+                dateFormat="Pp"
+                timeFormat="p"
+                timeIntervals={5}
+                onChange={val => {
+                    onChange(name, val);
+                }}
+            />
+        );
+    };
 
     return (
         <div>
@@ -83,20 +106,40 @@ const SacrificeForm = (props) => {
                             actions.resetForm()
                         }}
                     >
-                        {({ values, errors, handleChange, handleReset }) =>
+                        {({ values, errors, handleChange, handleReset, setFieldValue }) =>
                         (<Form>
                             <label>Pick the date and time that you're willing to sacrifice for meeting
                                 up with friends. Everything will be updated in real time. </label>
                             <br/>
-                            <Field 
+                            {/* <Field
+                                // selected={new Date()}
                                 label="Pick the date and time that you're willing to sacrifice for meeting
                                 up with friends. Everything will be updated in real time."
                                 name={"date"}
                                 type="datetime-local"
                                 onChange={handleChange}
+                                // onChange={date => setFieldValue('date', date)}
                                 value={values.date}
                                 error={errors.date && Boolean(errors.date)}
                                 // helperText={errors.date && errors.date}
+                            /> */}
+                            {/* <DatePicker selected={startDate} onChange={date => setStartDate(date)} /> */}
+                            {/* <DatePicker
+                                name="date"
+                                value={values.date}
+                                selected={new Date()}
+                                // onChange={date => setStartDate(date)}
+                                // onChange={setFieldValue}
+                                showTimeSelect
+                                dateFormat="Pp"
+                                // onChange={val => {
+                                //     onChange(name, val);
+                                // }}
+                            /> */}
+                            <DatePickerField
+                                name="date"
+                                value={values.date}
+                                onChange={setFieldValue}
                             />
                             {errors &&
                                 errors.date &&
@@ -150,11 +193,36 @@ const SacrificeForm = (props) => {
                                         </button> */}
                                         {values.comments.length > 0 &&
                                         values.comments.map((comment, index) => (
-                                            <div key={index} style={{display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center", margin: "10px 0"}}>
-                                                <div style={{width: "80%"}}>
-                                                    <label>{props.auth.user}: </label>
+                                            <div key={index} style={{display: "flex", flexDirection: "column"}}>
+                                                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-betwen", alignItems: "center", margin: "10px 0"}}>
+                                                    <label style={{margin: "0"}}>{props.auth.user}:</label>
+                                                    <div id="spacer" style={{width: "5px", background: "none"}}></div>
                                                     <Field
-                                                        style={{width: "80%"}}
+                                                        style={{flexGrow: "1"}}
+                                                        fullWidth={true}
+                                                        label={"Comments"}
+                                                        name={`comments.${index}.content`}
+                                                        value={values.comments[index].content}
+                                                        onChange={handleChange}
+                                                        // error={!!errors.questions?.[index].question}
+                                                        // helperText={errors.questions?.[index].question}
+                                                    />
+                                                    <button style={{background: "none", border: "none"}} onClick={() => remove(index)}>❌</button>
+                                                </div>
+                                                {errors &&
+                                                    errors.comments &&
+                                                    errors.comments[index] &&
+                                                    errors.comments[index].content &&
+                                                    (
+                                                    <div style={error}>
+                                                        {errors.comments[index].content}
+                                                    </div>
+                                                    )}
+                                                {/* <div>
+                                                    <label>{props.auth.user}:</label>
+                                                    <div id="spacer" style={{width: "5px", background: "none"}}></div>
+                                                    <Field
+                                                        // style={{width: "80%"}}
                                                         fullWidth={true}
                                                         label={"Comments"}
                                                         name={`comments.${index}.content`}
@@ -167,54 +235,17 @@ const SacrificeForm = (props) => {
                                                     errors.comments &&
                                                     errors.comments[index] &&
                                                     errors.comments[index].content &&
-                                                (
-                                                        <div style={error}>
-                                                            {errors.comments[index].content}
-                                                        </div>
+                                                    (
+                                                    <div style={error}>
+                                                        {errors.comments[index].content}
+                                                    </div>
                                                     )}
-                                                </div>
-                                                {/* <div className="col">
-                                                    <label htmlFor={`friends.${index}.email`}>Email</label>
-                                                    <Field
-                                                    name={`friends.${index}.email`}
-                                                    placeholder="jane@acme.com"
-                                                    type="email"
-                                                    />
-                                                    <ErrorMessage
-                                                    name={`friends.${index}.name`}
-                                                    component="div"
-                                                    className="field-error"
-                                                    />
                                                 </div> */}
-                                                {/* <div className={"selects"}>
-                                                    <div className="col">
-                                                        <TextField id="select" label="Difficulty" value={values.questions[index].difficulty} onChange={handleChange} name={`questions.${index}.difficulty`} select>
-                                                            <MenuItem value="easy">Easy</MenuItem>
-                                                            <MenuItem value="medium">Medium</MenuItem>
-                                                            <MenuItem value="hard">Hard</MenuItem>
-                                                        </TextField>
-                                                    </div>
-                                                    <div className="col">
-                                                        <TextField id="select" label="Type" value={values.questions[index].type} onChange={handleChange} name={`questions.${index}.type`} select>
-                                                            <MenuItem value="boolean">Boolean</MenuItem>
-                                                            <MenuItem value="multiple">Multiple</MenuItem>
-                                                        </TextField>
-                                                    </div>
+                                                
+                                                {/* <Button variant="danger" onClick={() => remove(index)}>❌</Button> */}
+                                                {/* <div style={{display: "flex", flexGrow: "1", justifyContent: "center", alignItems: "flex-start", alignSelf: "flex-start"}}>
+                                                    <Button variant="danger" onClick={() => remove(index)}>❌</Button>
                                                 </div> */}
-                                                {/* {(question.type === "boolean")? booleanFields(index, values, handleChange) : multipleFields(index, values, handleChange)} */}
-                                                {/* <div className="remove-btn">
-                                                    
-                                                </div> */}
-                                                <div style={{display: "flex", flexGrow: "1", justifyContent: "center", alignItems: "flex-start", alignSelf: "flex-start"}}>
-                                                    <Button
-                                                        // style={{alignSelf: "flex-start"}}
-                                                        variant="danger"
-                                                        // variant="contained" color="primary"
-                                                        onClick={() => remove(index)}
-                                                    >
-                                                        X
-                                                    </Button>
-                                                </div>
                                             </div>
                                         ))}
                                         <Button type="button"

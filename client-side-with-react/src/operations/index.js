@@ -866,6 +866,7 @@ const removePost = (id) => async (dispatch, state) => {
 }
 
 const removeComment = (id) => async (dispatch, state) => {
+    // console.log(id)
     axios.post(`${api_url}/remove_comment`, {id: id,})
     .then(async result => {
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {

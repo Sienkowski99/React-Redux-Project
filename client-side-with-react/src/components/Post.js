@@ -21,13 +21,13 @@ const Post = (props) => {
         const date_obj = new Date(props.post.date)
         parseInt(date_obj.getDate()) < 10 ? date+="0"+date_obj.getDate() : date+=date_obj.getDate()
         // date+=date_obj.getDate()
-        console.log(date)
+        // console.log(date)
         date+="."
-        parseInt(date_obj.getMonth()+1) < 10 ? date+=""+date_obj.getMonth()+1 : date+=date_obj.getMonth()+1
+        parseInt(date_obj.getMonth()+1) < 10 ? date+="0"+(parseInt(date_obj.getMonth())+1) : date+=date_obj.getMonth()+1
         // date+=date_obj.getMonth()+1
         date+="."
         date+=date_obj.getFullYear()
-        console.log(date)
+        // console.log(date)
         return date
     }
 
@@ -100,14 +100,18 @@ const Post = (props) => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <input onChange={(e)=>{setNew_data(e.target.value)}}/>
+                    <input style={{width: "100%"}} onChange={(e)=>{setNew_data(e.target.value)}}/>
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={()=>{handleClose()}}>Close</Button>
                     <Button variant="primary" onClick={()=>{
-                        handleClose()
-                        handleEditPost(props.post.id, new_data)
+                        if (new_data === null || new_data === "") {
+                            alert("Don't leave it empty!")
+                        } else {
+                            handleClose()
+                            handleEditPost(props.post.id, new_data)
+                        }
                     }}>Save changes</Button>
                 </Modal.Footer>
             </Modal>
@@ -119,7 +123,7 @@ const Post = (props) => {
                     <Card.Header style={{display: "flex"}}>
                         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%"}}>
                             <p style={{margin: "0"}}>{props.post.author}</p>
-                            <p style={{margin: "0"}}>{returnProperDate()}</p>
+                            <p style={{margin: "0", alignSelf: "center"}}>{returnProperDate()}</p>
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{setShow(true)}}>🖊️ edit</Button> : null}</p>
                                 <p style={{margin: "0 5px"}}>{props.post.author === props.auth.user ? "/" : null}  </p>
