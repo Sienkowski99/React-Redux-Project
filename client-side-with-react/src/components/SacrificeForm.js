@@ -221,7 +221,7 @@ const SacrificeForm = (props) => {
                                             style={{marginTop: "5px"}}
                                             // variant="contained" color="primary"
                                             // onClick={() => push({ question: '', type: 'boolean' , difficulty: 'easy', correct_answer: "", incorrect_answers: []})}
-                                            onClick={() => push({ author: props.auth.user, content: '', id: uuidv4() })}
+                                            onClick={() => push({ author: props.auth.user, content: '', id: uuidv4(), likes: 0, dislikes: 0 })}
                                         >
                                             Add comment
                                         </Button>

@@ -39,7 +39,8 @@ const ViewPost = (props) => {
             {/* <div style={{margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", width: "70%"}}>
                 {props.year.posts && props.year.posts.filter(post=>post.author === props.auth.user).length ? props.year.posts.filter(post=>post.author === props.auth.user).map(post=><PostPreview post={post}/>) : <p>NOT FOUND</p>}
             </div> */}
-            <h3 style={{margin: "10px 0"}}>Take a closer look at post {params.postId}</h3>
+            <h3 style={{margin: "10px 0"}}>Take a closer look at post</h3>
+            <h3 style={{margin: "10px 0", color: "gray"}}>{params.postId}</h3>
             <div style={{margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", width: "70%"}}>   
                 {props.year.posts && props.year.posts.filter(post=>post.id === params.postId).length ? <Post post={props.year.posts.filter(post=>post.id === params.postId)[0]}/> : <p>NOT FOUND</p>}
             </div>

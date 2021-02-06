@@ -95,22 +95,22 @@ const Post = (props) => {
     return (
         <>
             <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Enter new post content</Modal.Title>
-                    </Modal.Header>
+                <Modal.Header closeButton>
+                    <Modal.Title>Enter new post content</Modal.Title>
+                </Modal.Header>
 
-                    <Modal.Body>
-                        <input onChange={(e)=>{setNew_data(e.target.value)}}/>
-                    </Modal.Body>
+                <Modal.Body>
+                    <input onChange={(e)=>{setNew_data(e.target.value)}}/>
+                </Modal.Body>
 
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={()=>{handleClose()}}>Close</Button>
-                        <Button variant="primary" onClick={()=>{
-                            handleClose()
-                            handleEditPost(props.post.id, new_data)
-                        }}>Save changes</Button>
-                    </Modal.Footer>
-                </Modal>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={()=>{handleClose()}}>Close</Button>
+                    <Button variant="primary" onClick={()=>{
+                        handleClose()
+                        handleEditPost(props.post.id, new_data)
+                    }}>Save changes</Button>
+                </Modal.Footer>
+            </Modal>
             <div 
                 // style={comment_div_style}
                 style={{width: "100%", marginTop: "10px"}}
@@ -121,9 +121,9 @@ const Post = (props) => {
                             <p style={{margin: "0"}}>{props.post.author}</p>
                             <p style={{margin: "0"}}>{returnProperDate()}</p>
                             <div style={{display: "flex", flexDirection: "row"}}>
-                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{setShow(true)}}>🖊️</Button> : null}</p>
-                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? "edit / remove" : null}  </p>
-                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>❌</Button> : null}</p>
+                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{setShow(true)}}>🖊️ edit</Button> : null}</p>
+                                <p style={{margin: "0 5px"}}>{props.post.author === props.auth.user ? "/" : null}  </p>
+                                <p style={{margin: "0"}}>{props.post.author === props.auth.user ? <Button style={{margin: "0", padding: "0", background: "none", border: "none"}} onClick={()=>{handleRemovePost(props.post.id)}}>remove ❌</Button> : null}</p>
                             </div>
                             
                         </div>
@@ -148,7 +148,7 @@ const Post = (props) => {
                                 </Link>
                             </div>  
                         </div>
-                        {props.post.comments.map(comment => <Comment comment={comment}/>)}
+                        {props.post.comments.map(comment => <Comment comment={comment} auth={props.auth}/>)}
                         <div>
                             <form onSubmit={(e) => {handleAddComment(e, props.post.id); resetForm();}} id="myForm" style={{
                                 widht: "100%",

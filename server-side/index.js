@@ -102,6 +102,34 @@ app.post('/remove_post', (req, res) => {
 
 })
 
+app.post('/remove_comment', (req, res) => {
+
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+  // {id: req.body.id}
+  Post.update({}, { $pull: { comments: { id: req.body.id } } })
+  .then(result => {
+    // const with_comment = result.filter(post=>post.)
+    console.log(result)
+    response_object.msg = "OK"
+    response_object.statusCode = 200
+    res.send(response_object)
+
+  })
+  .catch(err=>{
+
+    console.log(err)
+    response_object.msg = "ERROR"
+    response_object.statusCode = 400
+    res.send(response_object)
+
+  })
+
+})
+
 app.post('/like_post', (req, res) => {
 
   let response_object = {
@@ -111,6 +139,33 @@ app.post('/like_post', (req, res) => {
   }
 
   Post.findOneAndUpdate({id: req.body.id}, {$inc: {"likes": 1}})
+  .then(result=>{
+
+    console.log(result)
+    response_object.msg = "OK"
+    response_object.statusCode = 200
+    res.send(response_object)
+
+  })
+  .catch(err=>{
+
+    console.log(err)
+    response_object.msg = "ERROR"
+    response_object.statusCode = 400
+    res.send(response_object)
+
+  })
+})
+
+app.post('/like_comment', (req, res) => {
+
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+  // Post.update({'comments.id': req.body.id}, {$set: {'comments.$.content': req.body.new_content}}, {new: true})
+  Post.update({'comments.id': req.body.id}, {$inc: {'comments.$.likes': 1}})
   .then(result=>{
 
     console.log(result)
@@ -156,6 +211,33 @@ app.post('/dislike_post', (req, res) => {
   })
 })
 
+app.post('/dislike_comment', (req, res) => {
+
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+
+  Post.update({'comments.id': req.body.id}, {$inc: {'comments.$.dislikes': 1}})
+  .then(result=>{
+
+    console.log(result)
+    response_object.msg = "OK"
+    response_object.statusCode = 200
+    res.send(response_object)
+
+  })
+  .catch(err=>{
+
+    console.log(err)
+    response_object.msg = "ERROR"
+    response_object.statusCode = 400
+    res.send(response_object)
+
+  })
+})
+
 app.post('/comment_post', (req, res) => {
   
   let response_object = {
@@ -167,7 +249,9 @@ app.post('/comment_post', (req, res) => {
   const comment = {
     author: req.body.author,
     content: req.body.comment,
-    id: uuidv4()
+    id: uuidv4(),
+    likes: 0,
+    dislikes: 0
   }
 
   Post.findOneAndUpdate({id: req.body.id}, {$push: {"comments": comment}}, {new: true})
@@ -239,6 +323,40 @@ app.post('/edit_post', (req, res) => {
   //   id: uuidv4()
   // })
   Post.findOneAndUpdate({id: req.body.id}, {$set: { content: req.body.new_content}}, {new: true})
+  .then(result=>{
+
+    console.log(result)
+    response_object.msg = "OK"
+    response_object.statusCode = 200
+    res.send(response_object)
+
+  })
+  .catch(err=>{
+
+    console.log(err)
+    response_object.msg = "ERROR"
+    response_object.statusCode = 400
+    res.send(response_object)
+
+  })
+})
+
+app.post('/edit_comment', (req, res) => {
+  let response_object = {
+    msg: null,
+    content: null,
+    statusCode: null
+  }
+  // const newPost = new Post({
+  //   date: req.body.date,
+  //   author: req.body.user,
+  //   content: req.body.message,
+  //   likes: 0,
+  //   dislikes: 0,
+  //   comments: req.body.comments,
+  //   id: uuidv4()
+  // })
+  Post.update({'comments.id': req.body.id}, {$set: {'comments.$.content': req.body.new_content}}, {new: true})
   .then(result=>{
 
     console.log(result)

@@ -668,6 +668,30 @@ const likePost = (id) => async (dispatch, state) => {
     })
 }
 
+const likeComment = (id) => async (dispatch, state) => {
+    axios.post(`${api_url}/like_comment`, {id: id})
+    .then( async result => {
+        console.log(result)
+        if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+            const year_state = state().year
+            console.log(year_state)
+            console.log("FETCHING POSTS")
+            const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
+            if (x !== null) {
+                dispatch(setYearAndMonth(x))
+            } else {
+                alert("ERROR")
+            }
+        } else {
+            console.log("error")
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        alert("error")
+    })
+}
+
 const editPost = (id, new_content) => async (dispatch, state) => {
     axios.post(`${api_url}/edit_post`, {id: id, new_content: new_content})
     .then( async result => {
@@ -692,8 +716,56 @@ const editPost = (id, new_content) => async (dispatch, state) => {
     })
 }
 
+const editComment = (id, new_content) => async (dispatch, state) => {
+    axios.post(`${api_url}/edit_comment`, {id: id, new_content: new_content})
+    .then( async result => {
+        console.log(result)
+        if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+            const year_state = state().year
+            console.log(year_state)
+            console.log("FETCHING POSTS")
+            const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
+            if (x !== null) {
+                dispatch(setYearAndMonth(x))
+            } else {
+                alert("ERROR")
+            }
+        } else {
+            console.log("error")
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        alert("error")
+    })
+}
+
 const dislikePost = (id) => async (dispatch, state) => {
     axios.post(`${api_url}/dislike_post`, {id: id})
+    .then( async result => {
+        console.log(result)
+        if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+            const year_state = state().year
+            console.log(year_state)
+            console.log("FETCHING POSTS")
+            const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
+            if (x !== null) {
+                dispatch(setYearAndMonth(x))
+            } else {
+                alert("ERROR")
+            }
+        } else {
+            console.log("error")
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        alert("error")
+    })
+}
+
+const dislikeComment = (id) => async (dispatch, state) => {
+    axios.post(`${api_url}/dislike_comment`, {id: id})
     .then( async result => {
         console.log(result)
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
@@ -754,6 +826,7 @@ const addPost = (data_object) => async (dispatch, state) => {
             const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
             if (x !== null) {
                 dispatch(setYearAndMonth(x))
+                alert("Post has been added")
             } else {
                 alert("ERROR")
             }
@@ -770,6 +843,30 @@ const addPost = (data_object) => async (dispatch, state) => {
 
 const removePost = (id) => async (dispatch, state) => {
     axios.post(`${api_url}/remove_post`, {id: id,})
+    .then(async result => {
+        if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
+            const year_state = state().year
+            console.log(year_state)
+            console.log("FETCHING POSTS")
+            const x = await fetch(year_state.name, monthsNames.indexOf(year_state.month_to_display.name))
+            if (x !== null) {
+                dispatch(setYearAndMonth(x))
+            } else {
+                alert("ERROR")
+            }
+        } else {
+            console.log("error")
+            alert("error")
+        }
+    })
+    .catch(err=>{
+        console.log(err)
+        alert("error")
+    })
+}
+
+const removeComment = (id) => async (dispatch, state) => {
+    axios.post(`${api_url}/remove_comment`, {id: id,})
     .then(async result => {
         if (result.data.statusCode >= 200 && result.data.statusCode < 300) {
             const year_state = state().year
@@ -809,7 +906,11 @@ const operations = {
     filterByContent,
     sortByXType,
     sortByLikesNo,
-    editPost
+    editPost,
+    removeComment,
+    editComment,
+    dislikeComment,
+    likeComment
 }
   
 export default operations
